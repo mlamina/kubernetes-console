@@ -1,0 +1,7 @@
+logging:
+  level: INFO
+  loggers:
+    com.github.mlamina: DEBUG
+
+server:
+  rootPath: /api/
