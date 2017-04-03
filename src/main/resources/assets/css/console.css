@@ -1,0 +1,33 @@
+#console {
+    height: 100px;
+    position: absolute;
+    width: 100%;
+    bottom: 0;
+    border: 0;
+    background-color: black;
+    color: #eee;
+    font-size: 24px;
+    padding-left: 32px;
+    font-family: monospace;
+    z-index: 5;
+}
+
+#console:focus {
+    border: 0;
+    outline: none;
+}
+
+#console-header {
+    position: absolute;
+    z-index: 10;
+    bottom: 30px;
+    left: 4px;
+    color: #eee;
+    font-size: 32px;
+    font-family: monospace;
+}
+
+#workspace {
+    background-color: #1e1e1e;
+    height: 100%;
+}

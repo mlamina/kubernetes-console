@@ -1,1 +1,27 @@
-Yo
+<html>
+  <head>
+    <link rel="stylesheet" href="https://unpkg.com/purecss@0.6.2/build/pure-min.css" integrity="sha384-UQiGfs9ICog+LwheBSRCt1o5cbyKIHbwjWscjemyBMT9YCUMZffs6UqUTd0hObXD" crossorigin="anonymous">
+    <link rel="stylesheet" href="/css/console.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/systemjs/0.20.10/system.js"></script>
+    <!--<script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>-->
+    <script>
+      SystemJS.import('/js/main.js');
+//      SystemJS.config({
+//        map: {
+//          'plugin-babel': 'systemjs-plugin-babel/plugin-babel.js',
+//          'systemjs-babel-build': 'systemjs-plugin-babel/systemjs-babel-browser.js'
+//        },
+//        transpiler: 'plugin-babel'
+//      });
+//      SystemJS.import('https://code.jquery.com/jquery-3.2.1.min.js');
+    </script>
+  </head>
+  <body>
+    <div class="pure-g" id="workspace">
+    </div>
+    <span id="console-header">
+      $
+    </span>
+    <input type="text" id="console" />
+  </body>
+</html>
