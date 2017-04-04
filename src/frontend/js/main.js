@@ -1,3 +1,4 @@
 import AppView from "./views/app"
 
-new AppView;
+var app = new AppView;
+app.render();
