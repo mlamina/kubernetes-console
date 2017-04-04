@@ -1,0 +1,17 @@
+{
+  "devDependencies": {
+    "gulp": "^3.9.1",
+    "gulp-serve": "^1.4.0",
+    "jspm": "^0.16.53"
+  },
+  "jspm": {
+    "directories": {
+      "baseURL": "src/frontend"
+    },
+    "devDependencies": {
+      "babel": "npm:babel-core@^5.8.24",
+      "babel-runtime": "npm:babel-runtime@^5.8.24",
+      "core-js": "npm:core-js@^1.1.4"
+    }
+  }
+}

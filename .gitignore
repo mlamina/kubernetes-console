@@ -2,3 +2,5 @@
 *.iml
 .DS_Store
 target/
+src/frontend/jspm_packages
+node_modules

@@ -52,6 +52,9 @@
     </dependencies>
 
     <build>
+
+        <sourceDirectory>src/backend/main/java</sourceDirectory>
+
         <plugins>
             <plugin>
                 <artifactId>maven-shade-plugin</artifactId>

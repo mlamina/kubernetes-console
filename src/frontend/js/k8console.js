@@ -1,6 +1,6 @@
 // import * as $ from 'jQuery';
 
-export default class K8Console {
+class K8Console {
 
   constructor(element) {
     this.element = $(element);
@@ -11,3 +11,5 @@ export default class K8Console {
   }
 
 }
+
+export default K8Console
