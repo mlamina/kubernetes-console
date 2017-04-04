@@ -1,5 +1,3 @@
-import K8Console from "./k8console";
+import AppView from "./views/app"
 
-var k8console = new K8Console(document.getElementById("console"));
-
-k8console.focus();
+new AppView;

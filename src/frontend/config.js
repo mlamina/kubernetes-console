@@ -16,8 +16,10 @@ System.config({
   map: {
     "babel": "npm:babel-core@5.8.38",
     "babel-runtime": "npm:babel-runtime@5.8.38",
+    "backbone": "npm:backbone@1.3.3",
     "core-js": "npm:core-js@1.2.7",
     "jquery": "npm:jquery@3.2.1",
+    "underscore": "npm:underscore@1.8.3",
     "github:jspm/nodelibs-assert@0.1.0": {
       "assert": "npm:assert@1.4.1"
     },
@@ -44,6 +46,10 @@ System.config({
     },
     "npm:babel-runtime@5.8.38": {
       "process": "github:jspm/nodelibs-process@0.1.2"
+    },
+    "npm:backbone@1.3.3": {
+      "process": "github:jspm/nodelibs-process@0.1.2",
+      "underscore": "npm:underscore@1.8.3"
     },
     "npm:buffer@3.6.0": {
       "base64-js": "npm:base64-js@0.0.8",
