@@ -21,8 +21,6 @@ public class CommandResource {
     @POST
     @Path("/parse")
     public Response add(@Valid ParseCommandRequest request) {
-        // TODO: Verify command syntax
-        // TODO: Figure out autocompletion for command
         ParseCommandResponse response = new ParseCommandResponse();
         response.setValid(true);
         response.setPossibleCompletions(Lists.newArrayList());
