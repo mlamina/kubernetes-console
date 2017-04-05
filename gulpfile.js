@@ -24,7 +24,7 @@ const conf = {
 };
 
 gulp.task('serve-frontend', serve(conf.paths.src.frontend));
-gulp.task('build-backend', mavenTask('Build backend', 'install'));
+gulp.task('build-backend', mavenTask('Build backend', 'package'));
 
 /**
  * Backend arguments used for development mode.

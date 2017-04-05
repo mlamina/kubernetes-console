@@ -6,6 +6,11 @@ import WorkspaceView from './workspace';
 
 class AppView extends Backbone.View {
 
+  constructor(api) {
+    super();
+    this.api = api;
+  }
+
   initialize() {
     this.setElement($('#k8console'), true);
     this.template = _.template(`
@@ -16,9 +21,11 @@ class AppView extends Backbone.View {
 
   render() {
     this.$el.html( this.template({}));
-    this.editor = new EditorView({ el: this.$('#editor-form') });
+    this.editor = new EditorView(this.api);
+    this.editor.setElement(this.$('#editor-form'));
     this.editor.render();
-    this.workspace = new WorkspaceView({ el: this.$('#workspace') });
+    this.workspace = new WorkspaceView();
+    this.workspace.setElement(this.$('#workspace'));
     this.workspace.render();
     return this;
   }

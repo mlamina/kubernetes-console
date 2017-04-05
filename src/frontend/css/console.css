@@ -1,9 +1,16 @@
-#editor {
+#editor-form {
     height: 100px;
     position: absolute;
     width: 100%;
     bottom: 0;
+    padding: 0;
+    margin: 0;
+}
+
+#editor {
     border: 0;
+    height: 100%;
+    width: 100%;
     background-color: black;
     color: #eee;
     font-size: 24px;
