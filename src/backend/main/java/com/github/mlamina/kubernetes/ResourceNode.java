@@ -4,7 +4,7 @@ import com.google.common.collect.Sets;
 
 import java.util.Set;
 
-public class ResourceNode extends ParseTree {
+public class ResourceNode extends CommandParseTree {
 
     private static final Set<String> SUPPORTED_RESOURCES =
             Sets.newHashSet("pods", "deployments", "services");
