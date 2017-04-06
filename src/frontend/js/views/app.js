@@ -24,6 +24,7 @@ class AppView extends Backbone.View {
     this.editor = new EditorView(this.api);
     this.editor.setElement(this.$('#editor-form'));
     this.editor.render();
+    this.editor.parseCommand();
     this.workspace = new WorkspaceView();
     this.workspace.setElement(this.$('#workspace'));
     this.workspace.render();

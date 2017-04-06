@@ -44,10 +44,10 @@
 #editor-header {
     position: absolute;
     z-index: 10;
-    bottom: 30px;
-    left: 4px;
-    color: #eee;
-    font-size: 32px;
+    bottom: 32px;
+    left: 9px;
+    color: #ccc;
+    font-size: 27px;
     font-family: monospace;
 }
 
@@ -57,6 +57,13 @@
 }
 
 .token, .token-wrapper, .token-completion {
-    /*border: 1px solid red;*/
     display: inline-block;
+}
+
+.token {
+    color: green;
+}
+
+.token-completion {
+    color: #636363;
 }

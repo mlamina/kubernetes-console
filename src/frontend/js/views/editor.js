@@ -61,9 +61,11 @@ class EditorView extends Backbone.View {
 
   render() {
     this.$el.html( this.template({}));
-    this.editor = new CommandView({ model: this.model });
-    this.editor.setElement(this.$('#editor-autocomplete'));
-    this.editor.render();
+    this.commandView = new CommandView({ model: this.model });
+    this.commandView.setElement(this.$('#editor-autocomplete'));
+    this.commandView.render();
+    this.$('#editor').focus();
+    return this;
   }
 }
 
