@@ -1,8 +1,8 @@
 {
   "devDependencies": {
     "gulp": "^3.9.1",
-    "gulp-maven-integration": "^2.0.0",
     "gulp-serve": "^1.4.0",
+    "gulp-watch": "^4.3.11",
     "jspm": "^0.16.53"
   },
   "jspm": {

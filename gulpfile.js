@@ -1,8 +1,10 @@
 var gulp = require('gulp'),
     serve = require('gulp-serve'),
-    mavenTask = require('gulp-maven-integration'),
     child = require('child_process'),
-    path = require('path');
+    exec = require('child_process').exec,
+    path = require('path'),
+    watch = require('gulp-watch');
+
 
 const conf = {
   paths: {
@@ -24,19 +26,14 @@ const conf = {
 };
 
 gulp.task('serve-frontend', serve(conf.paths.src.frontend));
-gulp.task('build-backend', mavenTask('Build backend', 'package'));
+gulp.task('build-backend', function (cb) {
+  exec('mvn package -Dmaven.javadoc.skip=true -DskipTests=true', function (err, stdout, stderr) {
+    // console.log(stdout);
+    console.log(stderr);
+    cb(err);
+  });
+});
 
-/**
- * Backend arguments used for development mode.
- *
- * @type {!Array<string>}
- */
-const backendDevArgs = [
-  '-jar',
-  path.join(conf.paths.build.backend, conf.artifacts.backendJar),
-  'server',
-  'config.yml'
-];
 
 /**
  * Currently running backend process object. Null if the backend is not running.
@@ -44,10 +41,13 @@ const backendDevArgs = [
  * @type {?child.ChildProcess}
  */
 let runningBackendProcess = null;
+let backendDevArgs = [
+  '-jar',
+  path.join(conf.paths.build.backend, conf.artifacts.backendJar),
+  'server',
+  'config.yml'
+];
 
-/**
- * Kills running backend process (if any).
- */
 gulp.task('kill-backend', function(doneFn) {
   if (runningBackendProcess) {
     runningBackendProcess.on('exit', function() {
@@ -69,7 +69,7 @@ gulp.task('kill-backend', function(doneFn) {
 gulp.task('serve-backend', ['build-backend', 'kill-backend'], function() {
   runningBackendProcess = child.spawn(
     'java', backendDevArgs,
-    {stdio: 'inherit', cwd: __dirname});
+    {cwd: __dirname});
 
   runningBackendProcess.on('exit', function() {
     // Mark that there is no backend process running anymore.
@@ -77,4 +77,6 @@ gulp.task('serve-backend', ['build-backend', 'kill-backend'], function() {
   });
 });
 
-gulp.task('serve', [ 'serve-backend', 'serve-frontend' ]);
+gulp.task('serve', [ 'serve-backend', 'serve-frontend' ], function () {
+  gulp.watch(path.join(conf.paths.src.backend, '**/*.java'), ['serve-backend']);
+});
