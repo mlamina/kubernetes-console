@@ -1,5 +1,7 @@
 import Backbone from "backbone";
 import * as _ from 'underscore';
+import Command from "../models/command"
+import CommandView from "./command"
 
 class EditorView extends Backbone.View {
 
@@ -19,19 +21,26 @@ class EditorView extends Backbone.View {
         <span id="editor-header">
           $
         </span>
+        <div id="editor-autocomplete"></div>
         <input type="text" id="editor" />
         <input type="submit" value="Go" hidden>
       </form>
     `);
     this.events = {
       'submit': 'submitCommand',
-      'keyup #editor': 'parseCommand'
+      'keyup #editor': 'updateModel'
     };
+    this.model = new Command();
+    this.listenTo(this.model, 'change:raw', this.parseCommand);
+  }
+
+  updateModel() {
+    this.model.set({ raw: this.getCurrentCommand() });
   }
 
   parseCommand() {
     this.api.parseCommand(this.getCurrentCommand()).then(
-      (response) => console.log(response),
+      (response) => this.model.set({ tokens: response.data }),
       (error) => console.error(error)
     );
   }
@@ -52,6 +61,9 @@ class EditorView extends Backbone.View {
 
   render() {
     this.$el.html( this.template({}));
+    this.editor = new CommandView({ model: this.model });
+    this.editor.setElement(this.$('#editor-autocomplete'));
+    this.editor.render();
   }
 }
 
