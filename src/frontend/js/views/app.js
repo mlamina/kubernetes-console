@@ -3,6 +3,7 @@ import * as _ from 'underscore';
 import $ from "jquery";
 import EditorView from './editor';
 import WorkspaceView from './workspace';
+import CommandExecution from '../models/command_execution';
 
 class AppView extends Backbone.View {
 
@@ -21,13 +22,18 @@ class AppView extends Backbone.View {
 
   render() {
     this.$el.html( this.template({}));
+    this.workspace = new WorkspaceView();
+    this.workspace.setElement(this.$('#workspace'));
+    this.workspace.render();
     this.editor = new EditorView(this.api);
     this.editor.setElement(this.$('#editor-form'));
     this.editor.render();
     this.editor.parseCommand();
-    this.workspace = new WorkspaceView();
-    this.workspace.setElement(this.$('#workspace'));
-    this.workspace.render();
+    this.editor.on('submitCommand', (command) => {
+      let commandExecution = new CommandExecution({ command: command });
+      this.workspace.addCommandExecution(commandExecution);
+    });
+
     return this;
   }
 }

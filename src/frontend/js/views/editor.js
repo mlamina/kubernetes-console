@@ -45,6 +45,13 @@ class EditorView extends Backbone.View {
     );
   }
 
+  reset() {
+    this.model = new Command();
+    this.listenTo(this.model, 'change:raw', this.parseCommand);
+    this.$el.find('#editor').val('');
+    this.render();
+  }
+
   /**
    * Issues the currently entered command to the backend.
    *
@@ -52,10 +59,8 @@ class EditorView extends Backbone.View {
    */
   submitCommand(event) {
     event.preventDefault();
-    this.api.executeCommand(this.getCurrentCommand()).then(
-      (response) => console.log(response),
-      (error) => console.error(error)
-    );
+    this.trigger('submitCommand', this.model);
+    this.reset();
   }
 
   getCurrentCommand() {
