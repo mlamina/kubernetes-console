@@ -2,8 +2,13 @@ package com.github.mlamina.api;
 
 public class ResponseError {
 
+    public ResponseError(int code, String message) {
+        this.message = message;
+        this.code = code;
+    }
+
     private int code;
-    private int message;
+    private String message;
 
     public int getCode() {
         return code;
@@ -13,11 +18,11 @@ public class ResponseError {
         this.code = code;
     }
 
-    public int getMessage() {
+    public String getMessage() {
         return message;
     }
 
-    public void setMessage(int message) {
+    public void setMessage(String message) {
         this.message = message;
     }
 }

@@ -1,5 +1,7 @@
 package com.github.mlamina.api;
 
+import com.google.common.collect.Sets;
+
 import java.util.Collection;
 
 public class MetaResponse {
@@ -29,5 +31,11 @@ public class MetaResponse {
 
     public void setErrors(Collection<ResponseError> errors) {
         this.errors = errors;
+    }
+
+    public static MetaResponse error(ResponseError ...responseErrors) {
+        MetaResponse response = new MetaResponse();
+        response.errors = Sets.newHashSet(responseErrors);
+        return response;
     }
 }

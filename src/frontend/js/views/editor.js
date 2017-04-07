@@ -52,7 +52,10 @@ class EditorView extends Backbone.View {
    */
   submitCommand(event) {
     event.preventDefault();
-    // TODO: Issue command
+    this.api.executeCommand(this.getCurrentCommand()).then(
+      (response) => console.log(response),
+      (error) => console.error(error)
+    );
   }
 
   getCurrentCommand() {

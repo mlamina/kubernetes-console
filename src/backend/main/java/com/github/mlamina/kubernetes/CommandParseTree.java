@@ -21,7 +21,7 @@ public class CommandParseTree {
         CommandParseTree tree = new CommandParseTree();
         // get ...
         CommandParseTree getNode = tree.addChild("get");
-        // get {resource}
+        // get {resources}
         getNode.addChild("deployments");
         getNode.addChild("pods");
         getNode.addChild("services");

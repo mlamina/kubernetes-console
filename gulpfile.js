@@ -69,7 +69,8 @@ gulp.task('kill-backend', function(doneFn) {
 gulp.task('serve-backend', ['build-backend', 'kill-backend'], function() {
   runningBackendProcess = child.spawn(
     'java', backendDevArgs,
-    {cwd: __dirname});
+    {stdio: 'inherit', cwd: __dirname});
+    // {cwd: __dirname});
 
   runningBackendProcess.on('exit', function() {
     // Mark that there is no backend process running anymore.

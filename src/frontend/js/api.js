@@ -9,17 +9,24 @@ class API {
   }
 
   parseCommand(command) {
-
-    var request = {
+    return this.sendPostRequest('/commands/parse', {
       command: command
-    };
+    });
+  }
 
+  executeCommand(command) {
+    return this.sendPostRequest('/commands/execute', {
+      command: command
+    });
+  }
+
+  sendPostRequest(path, data) {
     return $.ajax({
-      url: this.endpoint + '/commands/parse',
+      url: this.endpoint + path,
       dataType: 'json',
       type: 'post',
       contentType: 'application/json',
-      data: JSON.stringify( request ),
+      data: JSON.stringify( data ),
       processData: false
     });
   }
