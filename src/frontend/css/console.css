@@ -90,7 +90,7 @@ body {
     display: inline-block;
     letter-spacing: initial;
     border-left: 1px solid;
-    /* border-radius: 8px; */
+    width: 100%;
     padding-left: 12px;
     margin-top: 12px;
 }

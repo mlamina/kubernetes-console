@@ -28,11 +28,14 @@ class WorkspaceView extends Backbone.View {
   render() {
     this.$el.html(this.template({}));
     let list = this.$('#command-executions');
+    let height = 0;
     this.model.each((execution) => {
       let view = new CommandExecutionView({ model: execution });
       view.render();
       list.append(view.$el.html());
-    })
+      height += this.$el.height();
+    });
+    this.$el.scrollTop(height);
   }
 }
 
