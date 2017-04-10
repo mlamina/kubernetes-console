@@ -28,10 +28,37 @@ class EditorView extends Backbone.View {
     `);
     this.events = {
       'submit': 'submitCommand',
-      'keyup #editor': 'updateModel'
+      'keyup #editor': 'updateModel',
+      'keydown #editor': 'keyPressed'
     };
     this.model = new Command();
     this.listenTo(this.model, 'change:raw', this.parseCommand);
+  }
+
+  keyPressed(event) {
+    let code = event.keyCode || event.which;
+    console.log(code);
+    if (code === 9) {
+      this.triggerAutocomplete();
+      event.preventDefault();
+    }
+  }
+
+  triggerAutocomplete() {
+    if (this.model.has('tokens')) {
+      let newCommand = '';
+      for (let token of this.model.get('tokens')) {
+        if (token.known)
+          newCommand += token.value + ' ';
+        else {
+          if (token.completions.length > 0) {
+            newCommand += token.completions[token.completions.length - 1] + ' ';
+            break;
+          }
+        }
+      }
+      this.$el.find('#editor').val(newCommand);
+    }
   }
 
   updateModel() {

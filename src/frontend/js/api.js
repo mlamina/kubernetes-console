@@ -10,13 +10,13 @@ class API {
 
   parseCommand(command) {
     return this.sendPostRequest('/commands/parse', {
-      command: command
+      command: command.trim()
     });
   }
 
   executeCommand(command) {
     return this.sendPostRequest('/commands/execute', {
-      command: command
+      command: command.trim()
     });
   }
 
