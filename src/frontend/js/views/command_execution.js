@@ -7,15 +7,9 @@ class CommandExecutionView extends Backbone.View {
 
   initialize() {
     this.template = _.template(`
-      <li>
+      <li class="loading">
       <span class="command-execution-header"><%= this.model.get('command').get('raw') %></span>
-      <div class="command-execution-results"></div>
-      <% if (this.model.get('command').get('result')) { %>
-      waiting 
-      <% } else { %>
-        <%= this.model.get('command').get('result') %>
-      <% }; %>
-        
+      <div class="command-execution-results"></div>  
       </li>
     `);
 
@@ -25,6 +19,8 @@ class CommandExecutionView extends Backbone.View {
   render() {
     this.$el.html( this.template({}));
     let resultList = this.$('.command-execution-results');
+    if (this.model.has('result'))
+      this.$('li').removeClass('loading');
     _.each(this.model.get('result'), (result) => {
       // Create specific result view depending on resource type
       var resultView;

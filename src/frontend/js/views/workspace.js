@@ -14,9 +14,7 @@ class WorkspaceView extends Backbone.View {
 
   initialize() {
     this.template = _.template(`
-      <div class="pure-g" id="workspace">
-        <ul id="command-executions"></ul>
-      </div>
+      <ul id="command-executions"></ul>
     `);
     this.model = new CommandExecutions();
     this.listenTo(this.model, 'change', this.render);
@@ -24,6 +22,7 @@ class WorkspaceView extends Backbone.View {
 
   addCommandExecution(commandExecution) {
     this.model.add(commandExecution);
+    this.render();
   }
 
   render() {

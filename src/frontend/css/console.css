@@ -1,14 +1,17 @@
 body {
     margin: 0px;
+    background-color: #1e1e1e;
+    padding-bottom: 70px;
 }
 
 #editor-form {
-    height: 100px;
-    position: absolute;
+    height: 70px;
+    position: fixed;
     width: 100%;
     bottom: 0;
     padding: 0;
     margin: 0;
+    border-top: 1px solid rgba(204,204,204,0.2);
 }
 
 #editor {
@@ -22,6 +25,7 @@ body {
     font-family: monospace;
     z-index: 5;
     position: absolute;
+
 }
 
 #editor-autocomplete {
@@ -30,7 +34,7 @@ body {
     background-color: transparent;
     position: absolute;
     width: 100%;
-    bottom: 36px;
+    bottom: 21px;
     margin: 0;
     /*color: #eee;*/
     padding-left: 32px;
@@ -48,7 +52,7 @@ body {
 #editor-header {
     position: absolute;
     z-index: 10;
-    bottom: 32px;
+    bottom: 17px;
     left: 9px;
     color: #ccc;
     font-size: 27px;
@@ -56,8 +60,12 @@ body {
 }
 
 #workspace {
-    background-color: #1e1e1e;
     height: 100%;
+    overflow-y: auto;
+}
+
+.token-wrapper {
+    background-color: rgba(30,30,30, 1);
 }
 
 .token, .token-wrapper, .token-completion {
@@ -86,6 +94,12 @@ body {
     margin-top: 12px;
 }
 
+#command-executions li.loading {
+    animation-name: loading-blink;
+    animation-duration: 1s;
+    animation-iteration-count: infinite;
+}
+
 #command-executions span.command-execution-header {
     font-size: 26px;
     color: #555;
@@ -97,4 +111,10 @@ body {
     padding: 4px;
     display: inline-block;
     color: #ddd;
+}
+
+@keyframes loading-blink {
+    0%   {border-left-color: #1e1e1e;}
+    50%  {border-left-color: white;}
+    100% {border-left-color: #1e1e1e;}
 }
