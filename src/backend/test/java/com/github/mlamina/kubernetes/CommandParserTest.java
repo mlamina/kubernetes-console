@@ -20,6 +20,13 @@ public class CommandParserTest {
     }
 
     @Test
+    public void testParse() throws CommandParseException {
+        assertThat(new CommandParser("get").getTokens().size()).isEqualTo(2);
+        assertThat(new CommandParser("get deployments").getTokens().size()).isEqualTo(3);
+        assertThat(new CommandParser("get pods").getTokens().size()).isEqualTo(3);
+    }
+
+    @Test
     public void testFindGetResourcesCommand() throws CommandParseException {
         List<String> allResources = Lists.newArrayList(ResourceCache.INSTANCE.getAvailableNamespacedResourceTypes());
         allResources.addAll(ResourceCache.INSTANCE.getAvailableNonNamespacedResourceTypes());

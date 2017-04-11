@@ -27,6 +27,16 @@ public class ResourceCacheUpdaterTask extends AbstractScheduledService {
                 .map((n) -> n.getMetadata().getName())
                 .collect(Collectors.toList());
         ResourceCache.INSTANCE.setNamespaces(namespaces);
+        LOGGER.info("Updating pods");
+        ResourceCache.INSTANCE.set("pod", client.pods().list().getItems());
+        LOGGER.info("Updating deployments");
+        ResourceCache.INSTANCE.set("deployment", client.extensions().deployments().list().getItems());
+        LOGGER.info("Updating nodes");
+        ResourceCache.INSTANCE.set("node", client.nodes().list().getItems());
+        LOGGER.info("Updating services");
+        ResourceCache.INSTANCE.set("service", client.services().list().getItems());
+        LOGGER.info("Updating persistent volumes");
+        ResourceCache.INSTANCE.set("persistentvolume", client.persistentVolumes().list().getItems());
         LOGGER.info("Finished updating Kubernetes resource cache");
     }
 

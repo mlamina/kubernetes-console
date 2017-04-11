@@ -18,18 +18,37 @@ public class CommandParseTree {
      * @return the DSL's AST
      */
     public static CommandParseTree get() {
-        List<String> resourceTypes = ResourceCache.INSTANCE.getAvailableNamespacedResourceTypes();
+        List<String> namespacedResourceTypes = ResourceCache.INSTANCE.getAvailableNamespacedResourceTypes();
         List<String> namespaces = ResourceCache.INSTANCE.getNamespaces();
         CommandParseTree tree = new CommandParseTree();
         // get ...
         CommandParseTree getNode = tree.addChild("get");
         // get {resources}
-        resourceTypes.stream()
+        namespacedResourceTypes.stream()
                 .map((r) -> getNode.addChild(r + "s"))
                 // get {resources} in ...
                 .map((node) -> node.addChild("in"))
                 // get {resources} in {namespace}
                 .forEach((inNode) -> namespaces.forEach(inNode::addChild));
+        // from ...
+        CommandParseTree fromNode = tree.addChild("from");
+        namespaces.stream()
+                // from {namespace}
+                .map(fromNode::addChild)
+                // from {namespace} get ...
+                .map((namespaceNode) -> namespaceNode.addChild("get"))
+                // from {namespace} get {resourceType}
+                .forEach((getInNamespaceNode) ->
+                    namespacedResourceTypes.forEach((resourceType) -> {
+                        // from {namespace} get {resourceType} {resourceName}
+                        CommandParseTree getResourceInNamespaceNode = getInNamespaceNode.addChild(resourceType);
+                        ResourceCache.INSTANCE.get(resourceType)
+                                .stream()
+                                // filter resources by namespace
+                                .filter((resource) -> resource.getMetadata().getNamespace().equals(getInNamespaceNode.getParent().getToken()))
+                                .forEach((resource) -> getResourceInNamespaceNode.addChild(resource.getMetadata().getName()));
+                    })
+                );
         // watch ...
         tree.addChild("watch");
         // run ,,,
@@ -167,6 +186,10 @@ public class CommandParseTree {
         return child;
     }
 
+    @Override
+    public String toString() {
+        return String.format("%s", this.token);
+    }
 
     public CommandParseTree getParent() {
         return parent;
