@@ -1,7 +1,7 @@
 body {
     margin: 0px;
     background-color: #1e1e1e;
-    padding-bottom: 70px;
+    padding-bottom: 71px;
 }
 
 #editor-form {
@@ -126,15 +126,39 @@ body {
     font-family: monospace;
 }
 
+#command-executions .command-execution-results {
+    margin-top: 8px;
+}
+
 #command-executions .result {
     font-size: 14px;
     padding: 4px;
     display: inline-block;
     color: #ddd;
+
 }
 
 @keyframes loading-blink {
     0%   {border-left-color: #1e1e1e;}
     50%  {border-left-color: white;}
     100% {border-left-color: #1e1e1e;}
+}
+
+table.result-table thead th {
+    text-align: left;
+    color: #555;
+    font-weight: 100;
+}
+
+table.result-table tbody tr td {
+    color: #aaa;
+    font-weight: 300;
+}
+
+td.error {
+    color: rgba(255,0,0,0.7) !important;
+}
+
+td.warning {
+    color: orange !important;
 }

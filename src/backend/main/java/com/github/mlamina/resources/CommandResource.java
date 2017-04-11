@@ -1,9 +1,6 @@
 package com.github.mlamina.resources;
 
-import com.github.mlamina.api.ExecuteCommandRequest;
-import com.github.mlamina.api.MetaResponse;
-import com.github.mlamina.api.ParseCommandRequest;
-import com.github.mlamina.api.ResponseError;
+import com.github.mlamina.api.*;
 import com.github.mlamina.kubernetes.Command;
 import com.github.mlamina.kubernetes.CommandParseException;
 import com.github.mlamina.kubernetes.CommandParser;
@@ -30,7 +27,7 @@ public class CommandResource {
     @Path("/parse")
     public Response parse(@Valid ParseCommandRequest request) {
         CommandParser parser = new CommandParser(request.getCommand());
-        return Response.ok(MetaResponse.success(parser.getTokens())).build();
+        return Response.ok(MetaResponse.list(parser.getTokens(), MetaData.LIST_TYPE_TOKEN)).build();
     }
 
     @POST
@@ -40,7 +37,7 @@ public class CommandResource {
         Optional<Command> commandOptional = parser.getCommand();
         if (commandOptional.isPresent())
             try {
-                return Response.ok(MetaResponse.success(commandOptional.get().execute(client))).build();
+                return Response.ok(commandOptional.get().execute(client)).build();
             } catch (CommandParseException e) {
                 return Response.ok(MetaResponse.error(new ResponseError(100, e.getMessage()))).build();
             }

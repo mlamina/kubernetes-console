@@ -37,8 +37,7 @@ class EditorView extends Backbone.View {
 
   keyPressed(event) {
     let code = event.keyCode || event.which;
-    console.log(code);
-    if (code === 9) {
+    if (code === 9) { // Tab
       this.triggerAutocomplete();
       event.preventDefault();
     }

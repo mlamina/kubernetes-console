@@ -8,13 +8,27 @@ public class MetaResponse {
 
     private MetaResponse() {}
 
-    public static MetaResponse success(Object data) {
+    public static MetaResponse success(Object data, MetaData meta) {
         MetaResponse response = new MetaResponse();
         response.data = data;
+        response.meta = meta;
         return response;
     }
 
+    public static MetaResponse list(Collection<?> data, String listType) {
+        MetaResponse response = new MetaResponse();
+        response.data = data;
+        MetaData metaData = new MetaData();
+        metaData.setDataType(MetaData.TYPE_LIST);
+        metaData.setListType(listType);
+        response.meta = metaData;
+        return response;
+    }
+
+
+
     private Object data = null;
+    private MetaData meta;
     private Collection<ResponseError> errors;
 
     public Object getData() {
@@ -37,5 +51,9 @@ public class MetaResponse {
         MetaResponse response = new MetaResponse();
         response.errors = Sets.newHashSet(responseErrors);
         return response;
+    }
+
+    public MetaData getMeta() {
+        return meta;
     }
 }

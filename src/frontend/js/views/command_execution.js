@@ -1,7 +1,8 @@
 import Backbone from "backbone";
 import * as _ from 'underscore';
 import PodResultView from "./results/pod"
-import K8Resource from "../models/k8resource"
+import TableResultView from "./results/table"
+import K8ResourceList from "../models/k8resource_list"
 import $ from "jquery";
 
 class CommandExecutionView extends Backbone.View {
@@ -31,23 +32,28 @@ class CommandExecutionView extends Backbone.View {
         errorList.append(errorElement);
       });
       this.$('li').append(errorList);
-    } else {
+    } else if (this.model.has('result')) {
       this.$('li').addClass('success');
-      let resultList = this.$('.command-execution-results');
-      _.each(this.model.get('result'), (result) => {
-        // Create specific result view depending on resource type
-        var resultView;
-        switch (result.kind) {
-          case "Pod":
-            resultView = new PodResultView({ model: new K8Resource(result) });
-            break;
-          default:
-            console.error("Can't find view for resource: " + result.kind);
-        }
-        resultView.render();
-        resultList.append(resultView.$el.html());
-      });
+      let resultView = this.$('.command-execution-results');
+      let result = this.model.get('result');
+      // Create specific view depending on result type
+      switch (result.meta.dataType) {
+        case "List":
+          this.renderList(resultView, result);
+          break;
+        default:
+          console.error("Can't find view for resource: " + result.kind);
+      }
     }
+  }
+
+  renderList(parent, result) {
+    let resultView = new TableResultView({ model: new K8ResourceList({
+      type: result.meta.listType,
+      items: result.data
+    }) });
+    resultView.render();
+    parent.append(resultView.$el.html());
   }
 }
 

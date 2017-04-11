@@ -11,7 +11,7 @@ class CommandExecution extends Backbone.Model {
         if (response.errors)
           this.set('errors', response.errors);
         else
-          this.set('result', response.data);
+          this.set('result', response);
       },
       (error) => console.error(error)
     );
