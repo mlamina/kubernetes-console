@@ -1,5 +1,6 @@
 import Backbone from "backbone";
 import * as _ from 'underscore';
+import ProgressBarView from '../progress_bar'
 
 class PodTableRow extends Backbone.View {
 
@@ -7,7 +8,7 @@ class PodTableRow extends Backbone.View {
     this.template = _.template(`
       <tr>
         <td class="row-name"><%= name %></td>
-        <td class="row-containers-ready"><%= ready %></td>
+        <td class="row-containers-ready"></td>
         <td class="row-status"><%= status %></td>
         <td class="row-restarts"><%= restarts %></td>
       </tr>
@@ -28,6 +29,18 @@ class PodTableRow extends Backbone.View {
     // Sum up container restarts
     data.restarts = _.reduce(statuses, (num, status) => status.restartCount + num, 0);
     this.$el.html( this.template(data));
+
+    let progressBar = new ProgressBarView({
+      model: new Backbone.Model({
+        maximum: statuses.length,
+        current: containersReady,
+        label: data.ready
+      })
+    });
+
+    progressBar.render();
+    this.$('.row-containers-ready').append(progressBar.$el.html());
+
 
     if (containersReady === 0)
       this.$('.row-containers-ready').addClass('error');
