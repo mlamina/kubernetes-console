@@ -117,7 +117,6 @@ public class CommandParseTree {
                 // Try to match next token
                 for (CommandParseTree child: children){
                     if (child.canHandleToken(command[0])) {
-                        logger.info("Next child: {} for token {}", child, command[0]);
                         List<CommandToken> result = child.parse(ArrayUtils.remove(command, 0));
                         // Add current node to front of list
                         result.add(0, current);

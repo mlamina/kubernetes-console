@@ -59,7 +59,6 @@ class EditorView extends Backbone.View {
               let valueAtIndex = token.completions[0][completionIndex];
 
               _.each(token.completions, (completion) => {
-                console.log('Checking for ' + valueAtIndex + ' at ' + completionIndex + ' in ' + completion);
                 sameValueAtIndex = valueAtIndex === completion[completionIndex] && sameValueAtIndex;
               });
               if (sameValueAtIndex)

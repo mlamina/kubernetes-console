@@ -19,25 +19,27 @@ public class ResourceCacheUpdaterTask extends AbstractScheduledService {
 
     @Override
     protected void runOneIteration() throws Exception {
-        LOGGER.info("Starting update of Kubernetes resource cache");
-        LOGGER.info("Updating namespaces");
+        long start = System.currentTimeMillis();
+        LOGGER.debug("Starting update of Kubernetes resource cache");
+        LOGGER.debug("Updating namespaces");
         List<String> namespaces = client.namespaces().list()
                 .getItems()
                 .stream()
                 .map((n) -> n.getMetadata().getName())
                 .collect(Collectors.toList());
         ResourceCache.INSTANCE.setNamespaces(namespaces);
-        LOGGER.info("Updating pods");
+        LOGGER.debug("Updating pods");
         ResourceCache.INSTANCE.set("pod", client.pods().list().getItems());
-        LOGGER.info("Updating deployments");
+        LOGGER.debug("Updating deployments");
         ResourceCache.INSTANCE.set("deployment", client.extensions().deployments().list().getItems());
-        LOGGER.info("Updating nodes");
+        LOGGER.debug("Updating nodes");
         ResourceCache.INSTANCE.set("node", client.nodes().list().getItems());
-        LOGGER.info("Updating services");
+        LOGGER.debug("Updating services");
         ResourceCache.INSTANCE.set("service", client.services().list().getItems());
-        LOGGER.info("Updating persistent volumes");
+        LOGGER.debug("Updating persistent volumes");
         ResourceCache.INSTANCE.set("persistentvolume", client.persistentVolumes().list().getItems());
-        LOGGER.info("Finished updating Kubernetes resource cache");
+        long end = System.currentTimeMillis();
+        LOGGER.info(String.format("Finished updating Kubernetes resource cache in %d ms", (end - start)));
     }
 
     @Override
