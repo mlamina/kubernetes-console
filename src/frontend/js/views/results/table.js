@@ -1,6 +1,7 @@
 import Backbone from "backbone";
 import * as _ from 'underscore';
 import PodTableRow from './pod_row';
+import DeploymentTableRow from './deployment_row';
 import K8Resource from '../../models/k8resource';
 
 class TableResultView extends Backbone.View {
@@ -31,6 +32,9 @@ class TableResultView extends Backbone.View {
       case 'Pod':
         headers = ['name', 'ready', 'status', 'restarts'];
         break;
+      case 'Deployment':
+        headers = ['name'];
+        break;
     }
     this.$el.html( this.template({ headers: headers }));
     let table = this.$('tbody');
@@ -39,6 +43,9 @@ class TableResultView extends Backbone.View {
       switch (this.model.get('type')) {
         case 'Pod':
           row = new PodTableRow({ model: new K8Resource(item) });
+          break;
+        case 'Deployment':
+          row = new DeploymentTableRow({ model: new K8Resource(item) });
           break;
       }
       row.render();
