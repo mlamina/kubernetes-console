@@ -1,5 +1,6 @@
 package com.github.mlamina.kubernetes;
 
+import com.github.mlamina.kubernetes.commands.GetResourcesInNamespaceCommand;
 import com.github.mlamina.kubernetes.commands.GetResourcesCommand;
 import com.google.common.collect.Sets;
 
@@ -7,10 +8,14 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
+/**
+ * Takes a raw user command (e.g. "get pods in kube-system") and attempts to find a matching
+ * Command instance.
+ */
 public class CommandParser {
 
     private final String rawCommand;
-    private final Set<Command> commands = Sets.newHashSet(new GetResourcesCommand());
+    private final Set<Command> commands = Sets.newHashSet(new GetResourcesCommand(), new GetResourcesInNamespaceCommand());
 
     public CommandParser(String rawCommand) {
         this.rawCommand = rawCommand;
@@ -25,8 +30,7 @@ public class CommandParser {
         Optional<Command> commandOptional = commands.stream()
                 .filter((command) -> command.matches(rawCommand))
                 .findFirst();
-        if (commandOptional.isPresent())
-            commandOptional.get().setRawCommand(rawCommand);
+        commandOptional.ifPresent(command -> command.setRawCommand(rawCommand));
         return commandOptional;
     }
 }

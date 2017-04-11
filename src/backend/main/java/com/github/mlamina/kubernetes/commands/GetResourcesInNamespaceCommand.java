@@ -13,15 +13,20 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
-public class GetResourcesCommand extends Command {
+public class GetResourcesInNamespaceCommand extends Command {
     @Override
     protected Pattern getRegExp() {
-        // "^get\\s(deployments|pods|services|jobs|nodes|...)$"
-        List<String> allResourceTypes = ResourceCache.INSTANCE.getAvailableNamespacedResourceTypes();
-        allResourceTypes.addAll(ResourceCache.INSTANCE.getAvailableNonNamespacedResourceTypes());
-        allResourceTypes = allResourceTypes.stream().map((r) -> r + "s").collect(Collectors.toList());
-        String regex = "^get\\s(" + StringUtils.join(allResourceTypes, "|") + ")$";
-        return Pattern.compile(regex);
+        // "^get\\s(deployment|pod|service|job|node|...)\\sin\\s(default|kube-system|...))$"
+        List<String> namespacedResources = ResourceCache.INSTANCE.getAvailableNamespacedResourceTypes()
+                .stream()
+                .map((r) -> r + "s")
+                .collect(Collectors.toList());
+        String builder = "^get\\s(" +
+                StringUtils.join(namespacedResources, "|") +
+                ")\\sin\\s(" +
+                StringUtils.join(ResourceCache.INSTANCE.getNamespaces(), "|") +
+                ")$";
+        return Pattern.compile(builder);
     }
 
     @Override
@@ -31,17 +36,16 @@ public class GetResourcesCommand extends Command {
             if (!m.find())
                 throw new CommandParseException("Unable to parse command: " + getRawCommand());
             String resource = m.group(1);
+            String namespace = m.group(2);
             switch (resource) {
                 case "deployments":
-                    return MetaResponse.list(client.extensions().deployments().list().getItems(), MetaData.LIST_TYPE_DEPLOYMENT);
+                    return MetaResponse.list(client.extensions().deployments().inNamespace(namespace).list().getItems(), MetaData.LIST_TYPE_DEPLOYMENT);
                 case "pods":
-                    return MetaResponse.list(client.pods().list().getItems(), MetaData.LIST_TYPE_POD);
+                    return MetaResponse.list(client.pods().inNamespace(namespace).list().getItems(), MetaData.LIST_TYPE_POD);
                 case "services":
-                    return MetaResponse.list(client.services().list().getItems(), MetaData.LIST_TYPE_SERVICE);
+                    return MetaResponse.list(client.services().inNamespace(namespace).list().getItems(), MetaData.LIST_TYPE_SERVICE);
                 case "jobs":
-                    return MetaResponse.list(client.extensions().jobs().list().getItems(), MetaData.LIST_TYPE_JOB);
-                case "nodes":
-                    return MetaResponse.list(client.nodes().list().getItems(), MetaData.LIST_TYPE_NODE);
+                    return MetaResponse.list(client.extensions().jobs().inNamespace(namespace).list().getItems(), MetaData.LIST_TYPE_JOB);
                 default:
                     throw new CommandParseException("Unknown resource: " + resource);
             }

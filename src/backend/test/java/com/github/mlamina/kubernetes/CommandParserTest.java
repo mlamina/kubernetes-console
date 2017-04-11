@@ -1,7 +1,8 @@
 package com.github.mlamina.kubernetes;
 
 import com.github.mlamina.kubernetes.commands.GetResourcesCommand;
-import io.fabric8.kubernetes.client.DefaultKubernetesClient;
+import com.github.mlamina.kubernetes.commands.GetResourcesInNamespaceCommand;
+import org.assertj.core.util.Lists;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -13,12 +14,35 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class CommandParserTest {
 
 
+    @Before
+    public void setupResourceCache() {
+        ResourceCache.INSTANCE.setNamespaces(Lists.newArrayList("default", "kube-system"));
+    }
+
     @Test
     public void testFindGetResourcesCommand() throws CommandParseException {
-        CommandParser parser = new CommandParser("get deployments");
-        Optional<Command> result = parser.getCommand();
-        assertThat(result.isPresent()).isTrue();
-        assertThat(result.get()).isInstanceOf(GetResourcesCommand.class);
+        List<String> allResources = Lists.newArrayList(ResourceCache.INSTANCE.getAvailableNamespacedResourceTypes());
+        allResources.addAll(ResourceCache.INSTANCE.getAvailableNonNamespacedResourceTypes());
+        for (String resource: allResources) {
+            String command = "get " + resource + "s";
+            CommandParser parser = new CommandParser(command);
+            Optional<Command> result = parser.getCommand();
+            assertThat(result.isPresent()).withFailMessage("Command not found: %s", command).isTrue();
+            assertThat(result.get()).isInstanceOf(GetResourcesCommand.class);
+        }
+    }
+
+    @Test
+    public void testFindGetResourcesInNamespaceCommand() throws CommandParseException {
+        for (String resource: ResourceCache.INSTANCE.getAvailableNamespacedResourceTypes()) {
+            for (String namespace: ResourceCache.INSTANCE.getNamespaces()) {
+                String command = "get " + resource + "s in " + namespace;
+                CommandParser parser = new CommandParser(command);
+                Optional<Command> result = parser.getCommand();
+                assertThat(result.isPresent()).withFailMessage("Command not found: %s", command).isTrue();
+                assertThat(result.get()).isInstanceOf(GetResourcesInNamespaceCommand.class);
+            }
+        }
     }
 
 }
