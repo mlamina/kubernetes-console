@@ -1,8 +1,11 @@
 package com.github.mlamina;
 
 import com.github.mlamina.resources.CommandResource;
+import com.github.mlamina.tasks.ManagedPeriodicTask;
+import com.github.mlamina.tasks.ResourceCacheUpdaterTask;
 import io.dropwizard.Application;
 import io.dropwizard.assets.AssetsBundle;
+import io.dropwizard.lifecycle.Managed;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
 import org.eclipse.jetty.servlets.CrossOriginFilter;
@@ -46,6 +49,9 @@ public class ConsoleApplication extends Application<ConsoleConfiguration> {
         cors.setInitParameter(ALLOW_CREDENTIALS_PARAM, "true");
 
         environment.jersey().register(new CommandResource());
+
+        final ResourceCacheUpdaterTask cacheUpdater = new ResourceCacheUpdaterTask();
+        environment.lifecycle().manage(new ManagedPeriodicTask(cacheUpdater));
     }
 
 }

@@ -18,13 +18,18 @@ public class CommandParseTree {
      * @return the DSL's AST
      */
     public static CommandParseTree get() {
+        List<String> resources = Lists.newArrayList("deployment", "pod", "service", "job", "node");
+        List<String> namespaces = ResourceCache.INSTANCE.getNamespaces();
         CommandParseTree tree = new CommandParseTree();
         // get ...
         CommandParseTree getNode = tree.addChild("get");
         // get {resources}
-        getNode.addChild("deployments");
-        getNode.addChild("pods");
-        getNode.addChild("services");
+        resources.stream()
+                .map((r) -> getNode.addChild(r + "s"))
+                // get {resources} in ...
+                .map((node) -> node.addChild("in"))
+                // get {resources} in {namespace}
+                .forEach((inNode) -> namespaces.forEach(inNode::addChild));
         // watch ...
         tree.addChild("watch");
         return tree;
