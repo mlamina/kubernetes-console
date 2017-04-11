@@ -76,6 +76,10 @@ body {
     color: green;
 }
 
+span.token.error {
+    color: red;
+}
+
 .token-completion {
     color: #636363;
 }
@@ -121,13 +125,18 @@ body {
 }
 
 #command-executions span.command-execution-header {
-    font-size: 26px;
-    color: #555;
+    font-size: 22px;
+    color: #444;
     font-family: monospace;
 }
 
 #command-executions .command-execution-results {
     margin-top: 8px;
+}
+
+#command-executions .command-execution-results .empty-result {
+    color: #aaa;
+    font-weight: 300;
 }
 
 #command-executions .result {

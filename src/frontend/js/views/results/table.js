@@ -27,6 +27,10 @@ class TableResultView extends Backbone.View {
   }
 
   render() {
+    if (!this.model.get('items') || this.model.get('items').length === 0) {
+      this.$el.html('<div class="empty-result">EMPTY RESULT</div>');
+      return this;
+    }
     let headers = [];
     switch (this.model.get('type')) {
       case 'Pod':

@@ -1,7 +1,7 @@
 import Backbone from "backbone";
 import * as _ from 'underscore';
 
-class CommandView extends Backbone.View {
+class AutocompleteView extends Backbone.View {
 
   initialize() {
     this.template = _.template(`
@@ -12,7 +12,7 @@ class CommandView extends Backbone.View {
           <span class="token-completion"><%= completion %></span>
           <% if (index < list.length - 1 || index === list.length - 1 && token.value !== "") { %> <br> <% }; %> 
           <% }); %>
-          <span class="token"><%= token.value %></span>
+          <span class="token <%= token.class %>"><%= token.value %></span>
         </div>
         
         <% }); %>
@@ -23,8 +23,13 @@ class CommandView extends Backbone.View {
   }
 
   render() {
+    _.each(this.model.get('tokens'), (token) => {
+      token.class = "";
+      if (!token.known)
+        token.class = "error";
+    });
     this.$el.html( this.template({}));
   }
 }
 
-export default CommandView;
+export default AutocompleteView;

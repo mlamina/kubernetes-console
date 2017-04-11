@@ -1,7 +1,7 @@
 import Backbone from "backbone";
 import * as _ from 'underscore';
 import Command from "../models/command"
-import CommandView from "./command"
+import AutocompleteView from "./autocomplete"
 
 class EditorView extends Backbone.View {
 
@@ -112,9 +112,9 @@ class EditorView extends Backbone.View {
 
   render() {
     this.$el.html( this.template({}));
-    this.commandView = new CommandView({ model: this.model });
-    this.commandView.setElement(this.$('#editor-autocomplete'));
-    this.commandView.render();
+    this.autocomplete = new AutocompleteView({ model: this.model });
+    this.autocomplete.setElement(this.$('#editor-autocomplete'));
+    this.autocomplete.render();
     this.$('#editor').focus();
     return this;
   }
