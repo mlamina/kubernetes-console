@@ -51,7 +51,25 @@ class EditorView extends Backbone.View {
           newCommand += token.value + ' ';
         else {
           if (token.completions.length > 0) {
-            newCommand += token.completions[token.completions.length - 1] + ' ';
+            // Only complete the portion that all completions have in common
+            let completionIndex = 0;
+            let sameValueAtIndex = true;
+            let completionToAdd = '';
+            while (sameValueAtIndex && completionIndex < token.completions[0].length) {
+              let valueAtIndex = token.completions[0][completionIndex];
+
+              _.each(token.completions, (completion) => {
+                console.log('Checking for ' + valueAtIndex + ' at ' + completionIndex + ' in ' + completion);
+                sameValueAtIndex = valueAtIndex === completion[completionIndex] && sameValueAtIndex;
+              });
+              if (sameValueAtIndex)
+                completionToAdd += valueAtIndex;
+              completionIndex += 1;
+            }
+
+            newCommand += completionToAdd;
+            if (completionToAdd === token.completions[0])
+              newCommand += ' ';
             break;
           }
         }
