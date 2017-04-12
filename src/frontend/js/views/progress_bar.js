@@ -11,7 +11,6 @@ class ProgressBarView extends Backbone.View {
     this.template = _.template(`
       <div class="progress-bar">
       <div class="progress-indicator" style="width: <%= percentage %>%"></div>
-      <div class="progress-label"><%= label %></div>
       </div>
     `);
 
@@ -20,9 +19,10 @@ class ProgressBarView extends Backbone.View {
 
   render() {
     this.$el.html( this.template({
-      percentage: (this.model.get('current') / this.model.get('maximum')) * 100,
-      label: this.model.get('label')
+      percentage: (this.model.get('current') / this.model.get('maximum')) * 100
     }));
+    if (this.model.get('current') === 0)
+      this.$('.progress-bar').addClass('error');
   }
 
 }

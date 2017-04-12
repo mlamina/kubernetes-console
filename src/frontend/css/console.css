@@ -156,7 +156,7 @@ span.token.error {
 table.result-table thead th {
     text-align: left;
     color: #555;
-    font-weight: 100;
+    font-weight: 600;
 }
 
 table.result-table tbody tr td {
@@ -172,7 +172,7 @@ td.warning {
     color: orange !important;
 }
 
-td.row-containers-ready {
+td.row-progress {
     padding-right: 8px;
 }
 
@@ -183,17 +183,12 @@ div.progress-bar {
     border: 1px solid #555;
 }
 
+div.progress-bar.error {
+    border: 1px solid rgba(255,0,0,0.7);
+}
+
 div.progress-bar div.progress-indicator {
     display: inline-block;
     height: 100%;
     background-color: #555;
-}
-
-div.progress-bar div.progress-label{
-    margin: 0 auto;
-    width: 100%;
-    text-align: center;
-    font-size: 0.9em;
-    opacity: 0.7;
-    display: none;
 }

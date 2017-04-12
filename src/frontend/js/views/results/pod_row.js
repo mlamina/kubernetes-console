@@ -8,8 +8,9 @@ class PodTableRow extends Backbone.View {
     this.template = _.template(`
       <tr>
         <td class="row-name"><%= name %></td>
-        <td class="row-containers-ready"></td>
         <td class="row-status"><%= status %></td>
+        <td class="row-progress"></td>
+        <td class=""><%= ready %></td>
         <td class="row-restarts"><%= restarts %></td>
       </tr>
     `);
@@ -33,19 +34,20 @@ class PodTableRow extends Backbone.View {
     let progressBar = new ProgressBarView({
       model: new Backbone.Model({
         maximum: statuses.length,
-        current: containersReady,
-        label: data.ready
+        current: containersReady
       })
     });
 
     progressBar.render();
-    this.$('.row-containers-ready').append(progressBar.$el.html());
+    this.$('.row-progress').append(progressBar.$el.html());
 
 
     if (containersReady === 0)
-      this.$('.row-containers-ready').addClass('error');
+      this.$('.row-progress').addClass('error');
     else if (containersReady < statuses.length)
-      this.$('.row-containers-ready').addClass('warning');
+      this.$('.row-progress').addClass('warning');
+    if (data.restarts > 10)
+      this.$('.row-restarts').addClass('error');
   }
 }
 
