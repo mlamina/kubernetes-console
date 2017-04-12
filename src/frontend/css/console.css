@@ -34,7 +34,6 @@ li {
 
 #editor-autocomplete {
     height: auto;
-    width: inherit;
     background-color: transparent;
     position: absolute;
     width: 100%;
@@ -205,16 +204,18 @@ div.progress-bar div.progress-indicator {
     box-shadow: inset 0px 0px 4px 2px black;
     width: 100%;
     border-radius: 8px;
+    padding: 0px 8px 8px;
+}
+
+.result-logs .result-logs-data {
     color: #ccc;
     font-family: monospace;
-    padding: 34px 8px 8px;
     max-height: 300px;
     overflow-y: auto;
-    margin-top: -28px;
 }
 
 ul.result-logs-container-select {
-    padding: 10px 0 0 10px;
+    padding: 10px 0 0 2px;
     font-weight: 100;
     position: relative;
 }

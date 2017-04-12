@@ -6,9 +6,10 @@ class LogsResultView extends Backbone.View {
 
   initialize() {
     this.template = _.template(`
-      <ul class="result-logs-container-select"></ul>
+      
       <div class="result-logs">
-        <%= data %>
+        <ul class="result-logs-container-select"></ul>
+        <div class="result-logs-data"><%= data %></div>
       </div>
     `);
   }
