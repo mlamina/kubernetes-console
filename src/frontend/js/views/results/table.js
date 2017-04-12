@@ -2,6 +2,7 @@ import Backbone from "backbone";
 import * as _ from 'underscore';
 import PodTableRow from './pod_row';
 import DeploymentTableRow from './deployment_row';
+import ServiceTableRow from './service_row';
 import K8Resource from '../../models/k8resource';
 
 class TableResultView extends Backbone.View {
@@ -39,6 +40,9 @@ class TableResultView extends Backbone.View {
       case 'Deployment':
         headers = ['name', 'replicas', ''];
         break;
+      case 'Service':
+        headers = ['name', 'cluster IP', 'port(s)'];
+        break;
     }
     this.$el.html( this.template({ headers: headers }));
     let table = this.$('tbody');
@@ -50,6 +54,9 @@ class TableResultView extends Backbone.View {
           break;
         case 'Deployment':
           row = new DeploymentTableRow({ model: new K8Resource(item) });
+          break;
+        case 'Service':
+          row = new ServiceTableRow({ model: new K8Resource(item) });
           break;
       }
       row.render();
