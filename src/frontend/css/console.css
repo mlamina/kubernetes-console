@@ -4,6 +4,10 @@ body {
     padding-bottom: 71px;
 }
 
+li {
+    list-style: none;
+}
+
 #editor-form {
     height: 70px;
     position: fixed;
@@ -89,7 +93,7 @@ span.token.error {
     padding-left: 20px;
 }
 
-#command-executions li {
+#command-executions li.command-execution-item {
     font-family: sans-serif;
     display: inline-block;
     letter-spacing: initial;
@@ -97,17 +101,18 @@ span.token.error {
     width: 100%;
     padding-left: 12px;
     margin-top: 12px;
+    margin-bottom: 38px;
 }
 
-#command-executions li.success {
+#command-executions li.command-execution-item.success {
     border-left-color:green;
 }
 
-#command-executions li.error {
+#command-executions li.command-execution-item.error {
     border-left-color:red;
 }
 
-#command-executions li.loading {
+#command-executions li.command-execution-item.loading {
     animation-name: loading-blink;
     animation-duration: 1s;
     animation-iteration-count: infinite;
@@ -132,6 +137,7 @@ span.token.error {
 
 #command-executions .command-execution-results {
     margin-top: 8px;
+    width: 95%;
 }
 
 #command-executions .command-execution-results .empty-result {
@@ -191,4 +197,43 @@ div.progress-bar div.progress-indicator {
     display: inline-block;
     height: 100%;
     background-color: #555;
+}
+
+.result-logs {
+    border: black;
+    background-color: #111;
+    box-shadow: inset 0px 0px 4px 2px black;
+    width: 100%;
+    border-radius: 8px;
+    color: #ccc;
+    font-family: monospace;
+    padding: 34px 8px 8px;
+    max-height: 300px;
+    overflow-y: auto;
+    margin-top: -28px;
+}
+
+ul.result-logs-container-select {
+    padding: 10px 0 0 10px;
+    font-weight: 100;
+    position: relative;
+}
+
+ul.result-logs-container-select li {
+    border: 0 !important;
+    color: #777;
+    padding: 0;
+    display: inline;
+    list-style-type: none;
+    margin-right: 16px;
+}
+
+ul.result-logs-container-select li:hover {
+    cursor: pointer;
+}
+
+ul.result-logs-container-select li.selected {
+    border: 0;
+    color: steelblue;
+    padding: 0;
 }

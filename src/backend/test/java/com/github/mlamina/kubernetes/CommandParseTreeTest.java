@@ -103,4 +103,16 @@ public class CommandParseTreeTest {
         assertThat(parsed.get(4).getCompletions().get(0)).isEqualTo("pod1");
     }
 
+    @Test
+    public void testParseAddsLogCommand() throws CommandParseException {
+        List<CommandToken> parsed = tree.parse("logs default/pod1".split(" "));
+        assertThat(parsed.size()).isEqualTo(2);
+        assertThat(parsed.get(0).getPosition()).isEqualTo(0);
+        assertThat(parsed.get(1).getPosition()).isEqualTo(1);
+        assertThat(parsed.get(1).getValue()).isEqualTo("default/pod1");
+        assertThat(parsed.get(1).isKnown()).isTrue();
+        assertThat(parsed.get(1).isParsed()).isTrue();
+
+    }
+
 }

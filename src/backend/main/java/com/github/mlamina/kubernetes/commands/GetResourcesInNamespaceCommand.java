@@ -16,7 +16,7 @@ import java.util.stream.Collectors;
 public class GetResourcesInNamespaceCommand extends Command {
     @Override
     protected Pattern getRegExp() {
-        // "^get\\s(deployment|pod|service|job|node|...)\\sin\\s(default|kube-system|...))$"
+        // "get {resourceType}s in {namespace}"
         List<String> namespacedResources = ResourceCache.INSTANCE.getAvailableNamespacedResourceTypes()
                 .stream()
                 .map((r) -> r + "s")

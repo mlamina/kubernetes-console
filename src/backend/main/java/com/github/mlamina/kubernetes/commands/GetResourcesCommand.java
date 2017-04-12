@@ -16,7 +16,7 @@ import java.util.stream.Collectors;
 public class GetResourcesCommand extends Command {
     @Override
     protected Pattern getRegExp() {
-        // "^get\\s(deployments|pods|services|jobs|nodes|...)$"
+        // "get {resourceType}s"
         List<String> allResourceTypes = ResourceCache.INSTANCE.getAvailableNamespacedResourceTypes();
         allResourceTypes.addAll(ResourceCache.INSTANCE.getAvailableNonNamespacedResourceTypes());
         allResourceTypes = allResourceTypes.stream().map((r) -> r + "s").collect(Collectors.toList());

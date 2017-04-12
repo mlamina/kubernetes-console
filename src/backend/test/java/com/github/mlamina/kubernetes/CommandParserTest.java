@@ -24,6 +24,7 @@ public class CommandParserTest {
         assertThat(new CommandParser("get").getTokens().size()).isEqualTo(2);
         assertThat(new CommandParser("get deployments").getTokens().size()).isEqualTo(3);
         assertThat(new CommandParser("get pods").getTokens().size()).isEqualTo(3);
+        assertThat(new CommandParser("get pods").getTokens().size()).isEqualTo(3);
     }
 
     @Test

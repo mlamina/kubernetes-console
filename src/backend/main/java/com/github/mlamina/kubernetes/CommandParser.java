@@ -2,6 +2,7 @@ package com.github.mlamina.kubernetes;
 
 import com.github.mlamina.kubernetes.commands.GetResourcesInNamespaceCommand;
 import com.github.mlamina.kubernetes.commands.GetResourcesCommand;
+import com.github.mlamina.kubernetes.commands.LogsCommand;
 import com.google.common.collect.Sets;
 
 import java.util.List;
@@ -15,7 +16,10 @@ import java.util.Set;
 public class CommandParser {
 
     private final String rawCommand;
-    private final Set<Command> commands = Sets.newHashSet(new GetResourcesCommand(), new GetResourcesInNamespaceCommand());
+    private final Set<Command> commands = Sets.newHashSet(
+            new LogsCommand(),
+            new GetResourcesCommand(),
+            new GetResourcesInNamespaceCommand());
 
     public CommandParser(String rawCommand) {
         this.rawCommand = rawCommand;

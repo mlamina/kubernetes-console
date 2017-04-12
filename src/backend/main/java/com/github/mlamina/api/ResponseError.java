@@ -2,6 +2,8 @@ package com.github.mlamina.api;
 
 public class ResponseError {
 
+    public static final int CODE_LOG_FAILED = 201;
+
     public ResponseError(int code, String message) {
         this.message = message;
         this.code = code;

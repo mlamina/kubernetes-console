@@ -4,8 +4,11 @@ import com.github.mlamina.api.*;
 import com.github.mlamina.kubernetes.Command;
 import com.github.mlamina.kubernetes.CommandParseException;
 import com.github.mlamina.kubernetes.CommandParser;
+import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.client.DefaultKubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClient;
+import io.fabric8.kubernetes.client.KubernetesClientException;
+import io.fabric8.kubernetes.client.Watcher;
 
 import javax.validation.Valid;
 import javax.ws.rs.Consumes;
@@ -35,6 +38,7 @@ public class CommandResource {
     public Response execute(@Valid ExecuteCommandRequest request) {
         CommandParser parser = new CommandParser(request.getCommand());
         Optional<Command> commandOptional = parser.getCommand();
+//        client.pods().load("").getLog()
         if (commandOptional.isPresent())
             try {
                 return Response.ok(commandOptional.get().execute(client)).build();

@@ -19,6 +19,7 @@ public class CommandParseTree {
      */
     public static CommandParseTree get() {
         List<String> namespacedResourceTypes = ResourceCache.INSTANCE.getAvailableNamespacedResourceTypes();
+        List<String> nonNamespacedResourceTypes = ResourceCache.INSTANCE.getAvailableNonNamespacedResourceTypes();
         List<String> namespaces = ResourceCache.INSTANCE.getNamespaces();
         CommandParseTree tree = new CommandParseTree();
         // get ...
@@ -30,6 +31,8 @@ public class CommandParseTree {
                 .map((node) -> node.addChild("in"))
                 // get {resources} in {namespace}
                 .forEach((inNode) -> namespaces.forEach(inNode::addChild));
+        // get {resources}
+        nonNamespacedResourceTypes.forEach((r) -> getNode.addChild(r + "s"));
         // from ...
         CommandParseTree fromNode = tree.addChild("from");
         namespaces.stream()
@@ -51,18 +54,23 @@ public class CommandParseTree {
                 );
         // watch ...
         tree.addChild("watch");
-        // run ,,,
+        // logs ...
+        CommandParseTree logsNode = tree.addChild("logs");
+        ResourceCache.INSTANCE.get("pod").stream()
+                .map((pod) -> String.format("%s/%s", pod.getMetadata().getNamespace(), pod.getMetadata().getName()))
+                .forEach(logsNode::addChild);
+        // run ...
         tree.addChild("run");
         return tree;
     }
 
     // Root
-    protected CommandParseTree() {
+    private CommandParseTree() {
         token = null;
         parent = null;
     }
 
-    protected CommandParseTree(String token) {
+    private CommandParseTree(String token) {
         this.token = token;
     }
 

@@ -1,6 +1,6 @@
 import Backbone from "backbone";
 import * as _ from 'underscore';
-import PodResultView from "./results/pod"
+import LogResultView from "./results/logs"
 import TableResultView from "./results/table"
 import K8ResourceList from "../models/k8resource_list"
 import $ from "jquery";
@@ -9,7 +9,7 @@ class CommandExecutionView extends Backbone.View {
 
   initialize() {
     this.template = _.template(`
-      <li class="loading">
+      <li class="loading command-execution-item">
       <span class="command-execution-header"><%= this.model.get('command').get('raw') %></span>
       <div class="command-execution-results"></div> 
        
@@ -48,10 +48,15 @@ class CommandExecutionView extends Backbone.View {
   }
 
   renderList(parent, result) {
-    let resultView = new TableResultView({ model: new K8ResourceList({
-      type: result.meta.listType,
-      items: result.data
-    }) });
+    let resultView;
+    if (result.meta.listType === 'Logs') {
+      resultView = new LogResultView({ model: new Backbone.Collection(result.data) })
+    } else {
+      resultView = new TableResultView({ model: new K8ResourceList({
+        type: result.meta.listType,
+        items: result.data
+      }) });
+    }
     resultView.render();
     parent.append(resultView.$el.html());
   }
