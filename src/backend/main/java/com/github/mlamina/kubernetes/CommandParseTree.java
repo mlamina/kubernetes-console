@@ -2,6 +2,7 @@ package com.github.mlamina.kubernetes;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
+import io.fabric8.kubernetes.api.model.Pod;
 import org.apache.commons.lang3.ArrayUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -59,8 +60,22 @@ public class CommandParseTree {
         ResourceCache.INSTANCE.get("pod").stream()
                 .map((pod) -> String.format("%s/%s", pod.getMetadata().getNamespace(), pod.getMetadata().getName()))
                 .forEach(logsNode::addChild);
-        // run ...
-        tree.addChild("run");
+        // run {command} in {pod}[/{container}]
+        CommandParseTree runCommandNode = tree.addChild("run").addVariable("command").addChild("in");
+        ResourceCache.INSTANCE.get("pod").stream()
+                .map((pod) -> String.format("%s/%s", pod.getMetadata().getNamespace(), pod.getMetadata().getName()))
+                .forEach(runCommandNode::addChild);
+        // scale ...
+        CommandParseTree scaleNode = tree.addChild("scale");
+        ResourceCache.INSTANCE.get("deployment")
+                .stream()
+                // scale {namespace}/{deploymentName} ...
+                .map((deployment) -> scaleNode.addChild(String.format(
+                        "%s/%s",
+                        deployment.getMetadata().getNamespace(),
+                        deployment.getMetadata().getName())))
+                // scale {namespace}/{deploymentName} {replicas}
+                .forEach((deploymentNode) -> deploymentNode.addVariable("replicas"));
         return tree;
     }
 
@@ -76,6 +91,7 @@ public class CommandParseTree {
 
     private CommandParseTree parent = null;
     protected String token;
+    private boolean isVariable = false;
 
     private List<CommandParseTree> children = Lists.newArrayList();
 
@@ -86,6 +102,7 @@ public class CommandParseTree {
             CommandToken current = new CommandToken(getToken(), countParents() - 1);
             current.setKnown(true);
             current.setParsed(true);
+            current.setVariable(isVariable());
             result.add(current);
 
             // Add unparsed tokens to the end of the list
@@ -116,6 +133,7 @@ public class CommandParseTree {
                 CommandToken current = new CommandToken(getToken(), countParents() - 1);
                 current.setKnown(true);
                 current.setParsed(true);
+                current.setVariable(isVariable());
                 if (command.length == 0) {
                     // Current node expects additional tokens
                     CommandToken suggestion = new CommandToken("", current.getPosition() + 1);
@@ -126,6 +144,9 @@ public class CommandParseTree {
                 for (CommandParseTree child: children){
                     if (child.canHandleToken(command[0])) {
                         List<CommandToken> result = child.parse(ArrayUtils.remove(command, 0));
+                        // If child was a variable, replace variable name with user value
+                        if (result.size() > 0 && result.get(0).isVariable())
+                            result.get(0).setValue(command[0]);
                         // Add current node to front of list
                         result.add(0, current);
                         return result;
@@ -147,8 +168,13 @@ public class CommandParseTree {
 
     private List<String> getCompletionsFor(String token) {
         return children.stream()
-                .map(CommandParseTree::getToken)
-                .filter((t) -> t.startsWith(token))
+                .filter((t) -> t.getToken().startsWith(token) || t.isVariable())
+                .map((node) -> {
+                    if (node.isVariable())
+                        return String.format("{%s}", node.getToken());
+                    else
+                        return node.getToken();
+                })
                 .collect(Collectors.toList());
     }
 
@@ -164,8 +190,10 @@ public class CommandParseTree {
 
 
 
-    protected boolean canHandleToken(String token) {
+    private boolean canHandleToken(String token) {
         Preconditions.checkNotNull(token);
+        if (isVariable)
+            return true;
         return this.token.equals(token);
     }
 
@@ -187,8 +215,15 @@ public class CommandParseTree {
      * @param token
      * @return The new child node
      */
-    public CommandParseTree addChild(String token) {
+    private CommandParseTree addChild(String token) {
         CommandParseTree child = new CommandParseTree(token);
+        addChild(child);
+        return child;
+    }
+
+    private CommandParseTree addVariable(String name) {
+        CommandParseTree child = new CommandParseTree(name);
+        child.isVariable = true;
         addChild(child);
         return child;
     }
@@ -208,5 +243,9 @@ public class CommandParseTree {
 
     public String getToken() {
         return this.token;
+    }
+
+    public boolean isVariable() {
+        return isVariable;
     }
 }

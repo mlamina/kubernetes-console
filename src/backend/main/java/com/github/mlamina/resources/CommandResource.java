@@ -38,7 +38,6 @@ public class CommandResource {
     public Response execute(@Valid ExecuteCommandRequest request) {
         CommandParser parser = new CommandParser(request.getCommand());
         Optional<Command> commandOptional = parser.getCommand();
-//        client.pods().load("").getLog()
         if (commandOptional.isPresent())
             try {
                 return Response.ok(commandOptional.get().execute(client)).build();

@@ -79,8 +79,9 @@ public class CommandParseTreeTest {
         assertThat(parsed.get(1).getValue()).isEqualTo("p");
         assertThat(parsed.get(1).isParsed()).isFalse();
         assertThat(parsed.get(1).isKnown()).isFalse();
-        assertThat(parsed.get(1).getCompletions().size()).isEqualTo(1);
+        assertThat(parsed.get(1).getCompletions().size()).isEqualTo(2);
         assertThat(parsed.get(1).getCompletions().get(0)).isEqualTo("pods");
+        assertThat(parsed.get(1).getCompletions().get(1)).isEqualTo("persistentvolumes");
     }
 
     @Test
@@ -113,6 +114,31 @@ public class CommandParseTreeTest {
         assertThat(parsed.get(1).isKnown()).isTrue();
         assertThat(parsed.get(1).isParsed()).isTrue();
 
+    }
+
+    @Test
+    public void testParseRecognizesIncompleteVariables() throws CommandParseException {
+        List<CommandToken> parsed = tree.parse("run aaa".split(" "));
+        assertThat(parsed.size()).isEqualTo(3);
+        assertThat(parsed.get(1).getPosition()).isEqualTo(1);
+        assertThat(parsed.get(1).getValue()).isEqualTo("aaa");
+        assertThat(parsed.get(1).isKnown()).isTrue();
+        assertThat(parsed.get(1).isParsed()).isTrue();
+        assertThat(parsed.get(1).isVariable()).isTrue();
+    }
+
+    @Test
+    public void testParseRecognizesCompleteVariables() throws CommandParseException {
+        List<CommandToken> parsed = tree.parse("run aaa ".split(" "));
+        assertThat(parsed.size()).isEqualTo(3);
+        assertThat(parsed.get(1).getPosition()).isEqualTo(1);
+        assertThat(parsed.get(1).getValue()).isEqualTo("aaa");
+        assertThat(parsed.get(1).isKnown()).isTrue();
+        assertThat(parsed.get(1).isParsed()).isTrue();
+        assertThat(parsed.get(1).isVariable()).isTrue();
+
+        assertThat(parsed.get(2).getPosition()).isEqualTo(2);
+        assertThat(parsed.get(2).getValue()).isEqualTo("");
     }
 
 }

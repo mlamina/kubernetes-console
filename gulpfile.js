@@ -79,5 +79,5 @@ gulp.task('serve-backend', ['build-backend', 'kill-backend'], function() {
 });
 
 gulp.task('serve', [ 'serve-backend', 'serve-frontend' ], function () {
-  gulp.watch(path.join(conf.paths.src.backend, '**/*.java'), ['serve-backend']);
+  gulp.watch(path.join(conf.paths.src.backend, 'main/**/*.java'), ['serve-backend']);
 });

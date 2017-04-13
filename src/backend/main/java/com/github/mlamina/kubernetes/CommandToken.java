@@ -9,6 +9,7 @@ public class CommandToken {
     private String value;
     private int position;
     private boolean parsed, known = false;
+    private boolean variable = false;
     private List<String> completions = Lists.newArrayList();
 
 
@@ -47,5 +48,17 @@ public class CommandToken {
 
     public void setCompletions(List<String> completions) {
         this.completions = completions;
+    }
+
+    public boolean isVariable() {
+        return variable;
+    }
+
+    public void setVariable(boolean variable) {
+        this.variable = variable;
+    }
+
+    public void setValue(String value) {
+        this.value = value;
     }
 }
