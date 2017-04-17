@@ -4,13 +4,9 @@ import $ from "jquery";
 import EditorView from './editor';
 import WorkspaceView from './workspace';
 import CommandExecution from '../models/command_execution';
+import API from "../api"
 
 class AppView extends Backbone.View {
-
-  constructor(api) {
-    super();
-    this.api = api;
-  }
 
   initialize() {
     this.setElement($('#k8console'), true);
@@ -18,6 +14,7 @@ class AppView extends Backbone.View {
       <div id="workspace"></div>
       <form id="editor-form"></form>
     `);
+    this.api = new API();
   }
 
   render() {

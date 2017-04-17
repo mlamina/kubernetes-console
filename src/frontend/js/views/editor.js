@@ -3,20 +3,12 @@ import * as _ from 'underscore';
 import Command from "../models/command"
 import CommandHistory from "../models/command_history"
 import AutocompleteView from "./autocomplete"
+import API from "../api"
 
 class EditorView extends Backbone.View {
 
-  /**
-   * EditorView constructor.
-   *
-   * @param {!API} api Backend API
-   */
-  constructor(api) {
-    super();
-    this.api = api;
-  }
-
   initialize() {
+    this.api = new API();
     this.template = _.template(`
       <form>
         <span id="editor-header">
