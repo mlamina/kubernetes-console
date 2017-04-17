@@ -93,33 +93,20 @@ span.token.variable {
 
 #command-executions {
     list-style-type: none;
-    padding-left: 20px;
+    padding-left: 8px;
+    margin-top: 8px;
 }
 
 #command-executions li.command-execution-item {
     font-family: sans-serif;
     display: inline-block;
     letter-spacing: initial;
-    border-left: 1px solid;
     width: 100%;
     padding-left: 12px;
     margin-top: 12px;
     margin-bottom: 38px;
 }
 
-#command-executions li.command-execution-item.success {
-    border-left-color:green;
-}
-
-#command-executions li.command-execution-item.error {
-    border-left-color:red;
-}
-
-#command-executions li.command-execution-item.loading {
-    animation-name: loading-blink;
-    animation-duration: 1s;
-    animation-iteration-count: infinite;
-}
 
 #command-executions .command-execution-errors {
     padding-left: 0;
@@ -136,6 +123,23 @@ span.token.variable {
     font-size: 22px;
     color: #444;
     font-family: monospace;
+}
+
+#command-executions li.success span.command-execution-header:before {
+    content: "➜";
+    color: green;
+}
+
+#command-executions li.error span.command-execution-header:before {
+    content: "➜";
+    color: red;
+}
+
+#command-executions li.loading span.command-execution-header:before {
+    content: "➜";
+    animation-name: loading-blink;
+    animation-duration: 1s;
+    animation-iteration-count: infinite;
 }
 
 #command-executions .command-execution-results {
@@ -157,9 +161,9 @@ span.token.variable {
 }
 
 @keyframes loading-blink {
-    0%   {border-left-color: #1e1e1e;}
-    50%  {border-left-color: white;}
-    100% {border-left-color: #1e1e1e;}
+    0%   {color: #1e1e1e;}
+    50%  {color: white;}
+    100% {color: #1e1e1e;}
 }
 
 table.result-table thead th {
@@ -174,11 +178,23 @@ table.result-table tbody tr td {
 }
 
 td.error {
-    color: rgba(255,0,0,0.7) !important;
-}
+     color: rgba(255,0,0,0.7) !important;
+ }
 
 td.warning {
     color: orange !important;
+}
+
+span.error {
+    color: rgba(255,0,0,0.7) !important;
+}
+
+span.warning {
+    color: orange !important;
+}
+
+span.success{
+    color: green !important;
 }
 
 td.row-progress {

@@ -10,7 +10,9 @@ class CommandExecutionView extends Backbone.View {
   initialize() {
     this.template = _.template(`
       <li class="loading command-execution-item">
-      <span class="command-execution-header"><%= this.model.get('command').get('raw') %></span>
+      <span class="command-execution-header">
+        <%= this.model.get('command').get('raw') %>
+      </span>
       <div class="command-execution-results"></div> 
        
       </li>
