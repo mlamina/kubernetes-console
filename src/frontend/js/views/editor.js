@@ -1,6 +1,7 @@
 import Backbone from "backbone";
 import * as _ from 'underscore';
 import Command from "../models/command"
+import CommandHistory from "../models/command_history"
 import AutocompleteView from "./autocomplete"
 
 class EditorView extends Backbone.View {
@@ -32,7 +33,18 @@ class EditorView extends Backbone.View {
       'keydown #editor': 'keyPressed'
     };
     this.model = new Command();
+    this.history = new CommandHistory();
+    this.history.fetch();
+    this.historyDepth = -1;
     this.listenTo(this.model, 'change:raw', this.parseCommand);
+  }
+
+  loadHistoryCommand() {
+    if (this.historyDepth >= 0) {
+      let historyCommand = this.history.at(this.history.length - 1 - this.historyDepth);
+      this.$el.find('#editor').val(historyCommand.get('raw'));
+      this.model.set(historyCommand.properties);
+    }
   }
 
   keyPressed(event) {
@@ -41,6 +53,26 @@ class EditorView extends Backbone.View {
       this.triggerAutocomplete();
       event.preventDefault();
     }
+
+    // Handle history browsing with up/down keys
+    if (code === 38) { // Up
+      let nextDepth = this.historyDepth + 1;
+      let nextHistoryTriggerPosition = this.history.length - 1 - nextDepth;
+      if (this.history.length > 0 && nextHistoryTriggerPosition >= 0) {
+        event.preventDefault();
+        this.historyDepth = nextDepth;
+        this.loadHistoryCommand();
+      }
+    } else if (code === 40 && this.historyDepth > 0) { // Down
+      event.preventDefault();
+      this.historyDepth = this.historyDepth - 1;
+      this.loadHistoryCommand();
+    } else if (this.historyDepth >= 0) {
+      // Reset
+      this.historyDepth = -1;
+      this.$el.find('#editor').val('');
+    }
+
   }
 
   triggerAutocomplete() {
@@ -103,6 +135,8 @@ class EditorView extends Backbone.View {
   submitCommand(event) {
     event.preventDefault();
     this.trigger('submitCommand', this.model);
+    this.history.add(this.model);
+    this.model.save();
     this.reset();
   }
 

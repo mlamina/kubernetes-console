@@ -1,7 +1,11 @@
 import Backbone from "backbone";
-import * as _ from 'underscore';
+import {LocalStorage} from 'backbone.localstorage';
 
 class Command extends Backbone.Model {
+
+  initialize() {
+    // this.localStorage = new LocalStorage("Command");
+  }
 
   defaults() {
     return {
