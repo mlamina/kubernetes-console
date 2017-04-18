@@ -1,8 +1,10 @@
 package com.github.mlamina.kubernetes;
 
+import com.github.mlamina.kubernetes.commands.GetResourceInNamespaceCommand;
 import com.github.mlamina.kubernetes.commands.LogsCommand;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.api.model.Pod;
+import io.fabric8.kubernetes.api.model.extensions.Deployment;
 import io.fabric8.kubernetes.client.DefaultKubernetesClient;
 import org.assertj.core.util.Lists;
 import org.junit.Before;
@@ -24,12 +26,17 @@ public class CommandRegexTests {
         pod2.getMetadata().setName("pod2");
         pod2.getMetadata().setNamespace("kube-system");
         ResourceCache.INSTANCE.set("pod", Lists.newArrayList(pod, pod2));
+
+        Deployment deployment = new Deployment();
+        deployment.setMetadata(new ObjectMeta());
+        deployment.getMetadata().setName("dep");
+        deployment.getMetadata().setNamespace("default");
     }
 
     @Test
     public void testLogsCommand() {
         LogsCommand command = new LogsCommand();
-        assertThat(command.matches("logs default/pod1")).isTrue();
+        assertThat(command.matches("logs default/es-saphire-3w6d1")).isTrue();
         assertThat(command.matches("logs default/pod2")).isFalse();
         assertThat(command.matches("logs kube-system/pod2")).isTrue();
         assertThat(command.matches("logs ")).isFalse();
@@ -38,10 +45,15 @@ public class CommandRegexTests {
     }
 
     @Test
-    public void testLogging() throws CommandParseException {
-        LogsCommand command = new LogsCommand();
-        command.setRawCommand("logs default/es-saphire-3w6d1");
-        command.execute(new DefaultKubernetesClient());
+    public void testResourceInNamespace() throws CommandParseException {
+        GetResourceInNamespaceCommand command = new GetResourceInNamespaceCommand();
+        assertThat(command.matches("from default get pod es-saphire-3w6d1")).isTrue();
+        assertThat(command.matches("from kube-system get pod pod2")).isTrue();
+        assertThat(command.matches("from default get deployment dep")).isTrue();
+        assertThat(command.matches("from default get deployments dep")).isFalse();
+        assertThat(command.matches("from default get deployment ")).isFalse();
+        assertThat(command.matches("from default get deployment")).isFalse();
+        assertThat(command.matches("from default get pods es-saphire-3w6d1")).isFalse();
     }
 
 }

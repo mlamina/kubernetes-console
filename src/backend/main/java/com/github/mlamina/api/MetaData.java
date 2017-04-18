@@ -4,12 +4,12 @@ public class MetaData {
 
     public static final String TYPE_LIST = "List";
 
-    public static final String LIST_TYPE_TOKEN = "Token";
-    public static final String LIST_TYPE_POD = "Pod";
-    public static final String LIST_TYPE_SERVICE = "Service";
-    public static final String LIST_TYPE_JOB = "Job";
-    public static final String LIST_TYPE_NODE = "Node";
-    public static final String LIST_TYPE_DEPLOYMENT = "Deployment";
+    public static final String TYPE_TOKEN = "Token";
+    public static final String TYPE_POD = "Pod";
+    public static final String TYPE_SERVICE = "Service";
+    public static final String TYPE_JOB = "Job";
+    public static final String TYPE_NODE = "Node";
+    public static final String TYPE_DEPLOYMENT = "Deployment";
 
     private String dataType, listType;
 

@@ -4,11 +4,8 @@ import com.github.mlamina.api.*;
 import com.github.mlamina.kubernetes.Command;
 import com.github.mlamina.kubernetes.CommandParseException;
 import com.github.mlamina.kubernetes.CommandParser;
-import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.client.DefaultKubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClient;
-import io.fabric8.kubernetes.client.KubernetesClientException;
-import io.fabric8.kubernetes.client.Watcher;
 
 import javax.validation.Valid;
 import javax.ws.rs.Consumes;
@@ -30,7 +27,7 @@ public class CommandResource {
     @Path("/parse")
     public Response parse(@Valid ParseCommandRequest request) {
         CommandParser parser = new CommandParser(request.getCommand());
-        return Response.ok(MetaResponse.list(parser.getTokens(), MetaData.LIST_TYPE_TOKEN)).build();
+        return Response.ok(MetaResponse.list(parser.getTokens(), MetaData.TYPE_TOKEN)).build();
     }
 
     @POST

@@ -33,15 +33,15 @@ public class GetResourcesCommand extends Command {
             String resource = m.group(1);
             switch (resource) {
                 case "deployments":
-                    return MetaResponse.list(client.extensions().deployments().list().getItems(), MetaData.LIST_TYPE_DEPLOYMENT);
+                    return MetaResponse.list(client.extensions().deployments().list().getItems(), MetaData.TYPE_DEPLOYMENT);
                 case "pods":
-                    return MetaResponse.list(client.pods().list().getItems(), MetaData.LIST_TYPE_POD);
+                    return MetaResponse.list(client.pods().list().getItems(), MetaData.TYPE_POD);
                 case "services":
-                    return MetaResponse.list(client.services().list().getItems(), MetaData.LIST_TYPE_SERVICE);
+                    return MetaResponse.list(client.services().list().getItems(), MetaData.TYPE_SERVICE);
                 case "jobs":
-                    return MetaResponse.list(client.extensions().jobs().list().getItems(), MetaData.LIST_TYPE_JOB);
+                    return MetaResponse.list(client.extensions().jobs().list().getItems(), MetaData.TYPE_JOB);
                 case "nodes":
-                    return MetaResponse.list(client.nodes().list().getItems(), MetaData.LIST_TYPE_NODE);
+                    return MetaResponse.list(client.nodes().list().getItems(), MetaData.TYPE_NODE);
                 default:
                     throw new CommandParseException("Unknown resource: " + resource);
             }

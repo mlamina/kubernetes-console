@@ -25,6 +25,15 @@ public class MetaResponse {
         return response;
     }
 
+    public static MetaResponse resource(Object data, String resourceType) {
+        MetaResponse response = new MetaResponse();
+        response.data = data;
+        MetaData metaData = new MetaData();
+        metaData.setDataType(resourceType);
+        response.meta = metaData;
+        return response;
+    }
+
 
 
     private Object data = null;

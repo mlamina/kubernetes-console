@@ -39,13 +39,13 @@ public class GetResourcesInNamespaceCommand extends Command {
             String namespace = m.group(2);
             switch (resource) {
                 case "deployments":
-                    return MetaResponse.list(client.extensions().deployments().inNamespace(namespace).list().getItems(), MetaData.LIST_TYPE_DEPLOYMENT);
+                    return MetaResponse.list(client.extensions().deployments().inNamespace(namespace).list().getItems(), MetaData.TYPE_DEPLOYMENT);
                 case "pods":
-                    return MetaResponse.list(client.pods().inNamespace(namespace).list().getItems(), MetaData.LIST_TYPE_POD);
+                    return MetaResponse.list(client.pods().inNamespace(namespace).list().getItems(), MetaData.TYPE_POD);
                 case "services":
-                    return MetaResponse.list(client.services().inNamespace(namespace).list().getItems(), MetaData.LIST_TYPE_SERVICE);
+                    return MetaResponse.list(client.services().inNamespace(namespace).list().getItems(), MetaData.TYPE_SERVICE);
                 case "jobs":
-                    return MetaResponse.list(client.extensions().jobs().inNamespace(namespace).list().getItems(), MetaData.LIST_TYPE_JOB);
+                    return MetaResponse.list(client.extensions().jobs().inNamespace(namespace).list().getItems(), MetaData.TYPE_JOB);
                 default:
                     throw new CommandParseException("Unknown resource: " + resource);
             }
