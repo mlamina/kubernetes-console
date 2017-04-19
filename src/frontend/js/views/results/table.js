@@ -35,7 +35,7 @@ class TableResultView extends Backbone.View {
     let headers = [];
     switch (this.model.get('type')) {
       case 'Pod':
-        headers = ['name', 'status', 'ready', '', 'restarts'];
+        headers = ['name', 'status', 'IP', 'ready', '', 'restarts'];
         break;
       case 'Deployment':
         headers = ['name', 'replicas', ''];

@@ -6,8 +6,11 @@
 
   .progress-bar {
     border-color: #888;
-    margin-left: 6px;
     height: 10px;
     width: 100px;
+  }
+
+  .result-header .progress-bar {
+    margin-left: 6px;
   }
 }

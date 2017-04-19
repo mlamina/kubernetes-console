@@ -9,6 +9,7 @@ class PodTableRow extends Backbone.View {
       <tr>
         <td class="row-name"><%= name %></td>
         <td class="row-status"><%= status %></td>
+        <td class="ip-address"><%= ip %></td>
         <td class="row-progress"></td>
         <td class=""><%= ready %></td>
         <td class="row-restarts center"><%= restarts %></td>
@@ -27,6 +28,7 @@ class PodTableRow extends Backbone.View {
       return containerStatus.ready ? 'ready': 'notready';
     }).ready || 0;
     data.ready = containersReady + '/' + statuses.length;
+    data.ip = this.model.get('status').podIP;
     // Sum up container restarts
     data.restarts = _.reduce(statuses, (num, status) => status.restartCount + num, 0);
     this.$el.html( this.template(data));
