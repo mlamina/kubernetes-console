@@ -8,6 +8,10 @@ li {
     list-style: none;
 }
 
+td.center {
+    text-align: center;
+}
+
 #editor-form {
     height: 70px;
     position: fixed;
@@ -157,7 +161,51 @@ span.token.variable {
     padding: 4px;
     display: inline-block;
     color: #ddd;
+}
 
+#command-executions .result.result-pod {
+    padding: 8px;
+    border: 1px solid #aaa;
+}
+
+#command-executions .result.result-pod .result-header {
+    border-bottom: 1px solid #aaa;
+    padding-bottom: 4px;
+    margin-bottom: 8px;
+}
+
+#command-executions .result.result-pod th {
+
+}
+
+
+#command-executions .result.result-pod span.ip-address {
+    margin-left: 20px;
+}
+
+#command-executions .ip-address{
+    font-family: monospace;
+    font-size: 1em;
+    font-weight: 600;
+}
+
+#command-executions .result.result-pod span.pod-status {
+    text-transform: uppercase;
+    color: #aaa;
+    font-weight: 600;
+}
+
+td.resource-status:before {
+    content: "●";
+    margin-right: 4px;
+}
+
+td.resource-status.resource-status-green:before {
+    color: green;
+}
+
+td.resource-status.resource-status-red:before {
+    color: red;
 }
 
 @keyframes loading-blink {
@@ -167,14 +215,17 @@ span.token.variable {
 }
 
 table.result-table thead th {
+    border-bottom: 0;
+    font-size: 12px;
+    text-transform: uppercase;
+    color: #777;
     text-align: left;
-    color: #555;
-    font-weight: 600;
 }
 
 table.result-table tbody tr td {
     color: #aaa;
     font-weight: 300;
+    letter-spacing: 1px;
 }
 
 td.error {

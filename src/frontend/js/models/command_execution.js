@@ -6,14 +6,17 @@ class CommandExecution extends Backbone.Model {
 
   initialize() {
     this.api = new API();
+    let self = this;
     this.api.executeCommand(this.getCommand()).then(
       (response) => {
         if (response.errors)
-          this.set('errors', response.errors);
+          self.set('errors', response.errors);
         else
-          this.set('result', response);
+          self.set('result', response);
       },
-      (error) => console.error(error)
+      (error) => {
+        self.set('errors', [error.responseText])
+      }
     );
   }
 

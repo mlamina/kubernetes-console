@@ -8,7 +8,7 @@ class ServiceTableRow extends Backbone.View {
     this.template = _.template(`
       <tr>
         <td class="row-name"><%= name %></td>
-        <td><%= ip %></td>
+        <td class="ip-address"><%= ip %></td>
         <td><%= ports %></td>
       </tr>
     `);

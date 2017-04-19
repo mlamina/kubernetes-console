@@ -1,8 +1,8 @@
 import Backbone from "backbone";
 import * as _ from 'underscore';
 
-class K8Result extends Backbone.Model {
+class K8Resource extends Backbone.Model {
 
 }
 
-export default K8Result;
+export default K8Resource;
