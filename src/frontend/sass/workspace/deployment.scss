@@ -1,0 +1,13 @@
+@import "common";
+@import "../variables/colors";
+
+.result-deployment {
+  @extend .result-resource;
+
+  .progress-bar {
+    border-color: #888;
+    margin-left: 6px;
+    height: 10px;
+    width: 100px;
+  }
+}

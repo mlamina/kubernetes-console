@@ -1,7 +1,7 @@
 @import "variables/colors";
 
 body {
-  margin: 0px;
+  margin: 0;
   background-color: #1e1e1e;
   padding-bottom: 71px;
 }
@@ -14,18 +14,6 @@ td.center {
   text-align: center;
 }
 
-td.resource-status:before {
-  content: "●";
-  margin-right: 4px;
-}
-
-td.resource-status.resource-status-green:before {
-  color: green;
-}
-
-td.resource-status.resource-status-red:before {
-  color: red;
-}
 
 @keyframes loading-blink {
   0%   {color: #1e1e1e;}

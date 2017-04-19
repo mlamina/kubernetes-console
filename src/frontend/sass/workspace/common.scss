@@ -1,0 +1,32 @@
+@import "../variables/colors";
+
+.result {
+  font-size: 14px;
+  padding: 4px;
+  display: inline-block;
+  color: #ddd;
+}
+
+.result-resource {
+  @extend .result;
+  padding: 8px;
+  border: 1px solid $font-color-primary;
+
+  .result-header {
+    border-bottom: 1px solid $font-color-primary;
+    padding-bottom: 4px;
+    margin-bottom: 8px;
+  }
+
+  span.result-title {
+    text-transform: uppercase;
+    color: $font-color-primary;
+    font-weight: 600;
+  }
+}
+
+.ip-address{
+  font-family: monospace;
+  font-size: 1em;
+  font-weight: 600;
+}

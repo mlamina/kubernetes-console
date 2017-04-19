@@ -3,6 +3,7 @@ import * as _ from 'underscore';
 import LogResultView from "./results/logs"
 import TableResultView from "./results/table"
 import PodResultView from "./results/pod"
+import DeploymentResultView from "./results/deployment"
 import ErrorResultView from "./results/error"
 import K8ResourceList from "../models/k8resource_list"
 import K8Resource from "../models/k8resource"
@@ -45,6 +46,9 @@ class CommandExecutionView extends Backbone.View {
           break;
         case "Pod":
           resultView = new PodResultView({ model: new K8Resource(result.data)});
+          break;
+        case "DeploymentBundle":
+          resultView = new DeploymentResultView({ model: new K8Resource(result.data)});
           break;
         default:
           this.$('li').addClass('error').removeClass('success');

@@ -1,10 +1,13 @@
 package com.github.mlamina.kubernetes.commands;
 
+import com.github.mlamina.api.DeploymentBundle;
 import com.github.mlamina.api.MetaData;
 import com.github.mlamina.api.MetaResponse;
 import com.github.mlamina.kubernetes.Command;
 import com.github.mlamina.kubernetes.CommandParseException;
 import com.github.mlamina.kubernetes.ResourceCache;
+import io.fabric8.kubernetes.api.model.Pod;
+import io.fabric8.kubernetes.api.model.extensions.Deployment;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import org.apache.commons.lang3.StringUtils;
 
@@ -35,9 +38,15 @@ public class GetResourceInNamespaceCommand extends Command {
         String resourceName = m.group(3);
         switch (resourceType) {
             case "deployment":
-                return MetaResponse.resource(
-                        client.extensions().deployments().inNamespace(namespace).withName(resourceName).get(),
-                        MetaData.TYPE_DEPLOYMENT);
+                Deployment deployment = client.extensions()
+                        .deployments()
+                        .inNamespace(namespace)
+                        .withName(resourceName).get();
+                List<Pod> pods = client.pods()
+                        .inNamespace(namespace)
+                        .withLabels(deployment.getSpec().getSelector().getMatchLabels())
+                        .list().getItems();
+                return MetaResponse.resource(new DeploymentBundle(deployment, pods), MetaData.TYPE_DEPLOYMENT_BUNDLE);
             case "pod":
                 return MetaResponse.resource(
                         client.pods().inNamespace(namespace).withName(resourceName).get(),

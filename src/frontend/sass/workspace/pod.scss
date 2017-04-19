@@ -1,0 +1,10 @@
+@import "common";
+@import "../variables/colors";
+
+.result-pod {
+  @extend .result-resource;
+
+  span.ip-address {
+    margin-left: 20px;
+  }
+}

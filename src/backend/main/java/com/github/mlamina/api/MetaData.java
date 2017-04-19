@@ -10,6 +10,7 @@ public class MetaData {
     public static final String TYPE_JOB = "Job";
     public static final String TYPE_NODE = "Node";
     public static final String TYPE_DEPLOYMENT = "Deployment";
+    public static final String TYPE_DEPLOYMENT_BUNDLE = "DeploymentBundle";
 
     private String dataType, listType;
 
