@@ -11,7 +11,7 @@ class PodTableRow extends Backbone.View {
         <td class="row-status"><%= status %></td>
         <td class="row-progress"></td>
         <td class=""><%= ready %></td>
-        <td class="row-restarts"><%= restarts %></td>
+        <td class="row-restarts center"><%= restarts %></td>
       </tr>
     `);
   }

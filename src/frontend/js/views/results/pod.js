@@ -5,7 +5,7 @@ class PodResultView extends Backbone.View {
 
   initialize() {
     this.template = _.template(`
-      <div class="result result-pod">
+      <div class="result-pod">
         <div class="result-header">
           <span class="pod-status"><%= status.phase %></span>
           <span class="ip-address"><%= status.podIP %></span>

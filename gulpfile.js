@@ -3,7 +3,9 @@ var gulp = require('gulp'),
     child = require('child_process'),
     exec = require('child_process').exec,
     path = require('path'),
-    watch = require('gulp-watch');
+    watch = require('gulp-watch'),
+    sass = require('gulp-sass');
+
 
 
 const conf = {
@@ -25,7 +27,14 @@ const conf = {
   }
 };
 
-gulp.task('serve-frontend', serve(conf.paths.src.frontend));
+gulp.task('styles', function() {
+  gulp.src(path.join(conf.paths.src.frontend, 'sass/style.scss'))
+    .pipe(sass().on('error', sass.logError))
+    .pipe(gulp.dest(path.join(conf.paths.src.frontend, 'css')));
+});
+
+
+gulp.task('serve-frontend', ['styles'], serve(conf.paths.src.frontend));
 gulp.task('build-backend', function (cb) {
   exec('mvn package -Dmaven.javadoc.skip=true -DskipTests=true', function (err, stdout, stderr) {
     // console.log(stdout);
@@ -79,5 +88,6 @@ gulp.task('serve-backend', ['build-backend', 'kill-backend'], function() {
 });
 
 gulp.task('serve', [ 'serve-backend', 'serve-frontend' ], function () {
+  gulp.watch(path.join(conf.paths.src.frontend, 'sass/**/*.scss'), ['styles']);
   gulp.watch(path.join(conf.paths.src.backend, 'main/**/*.java'), ['serve-backend']);
 });

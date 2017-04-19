@@ -1,0 +1,77 @@
+#editor-form {
+  height: 70px;
+  position: fixed;
+  width: 100%;
+  bottom: 0;
+  padding: 0;
+  margin: 0;
+  border-top: 1px solid rgba(204,204,204,0.2);
+}
+
+#editor {
+  border: 0;
+  height: 100%;
+  width: 100%;
+  background-color: transparent;
+  color: rgba(238, 238, 238, 0.29);;
+  font-size: 24px;
+  padding-left: 32px;
+  font-family: monospace;
+  z-index: 5;
+  position: absolute;
+
+}
+
+#editor-autocomplete {
+  height: auto;
+  background-color: transparent;
+  position: absolute;
+  width: 100%;
+  bottom: 21px;
+  margin: 0;
+  /*color: #eee;*/
+  padding-left: 32px;
+  color: red;
+  font-size: 24px;
+  font-family: monospace;
+  z-index: 2;
+}
+
+#editor:focus {
+  border: 0;
+  outline: none;
+}
+
+#editor-header {
+  position: absolute;
+  z-index: 10;
+  bottom: 17px;
+  left: 9px;
+  color: #ccc;
+  font-size: 27px;
+  font-family: monospace;
+}
+
+.token-wrapper {
+  background-color: rgba(30,30,30, 1);
+}
+
+.token, .token-wrapper, .token-completion {
+  display: inline-block;
+}
+
+.token {
+  color: green;
+}
+
+span.token.error {
+  color: red;
+}
+
+span.token.variable {
+  color: dodgerblue;
+}
+
+.token-completion {
+  color: #636363;
+}

@@ -1,0 +1,105 @@
+@import "variables/colors";
+@import "workspace/logs";
+@import "workspace/progress-bar";
+
+#workspace {
+  height: 100%;
+  overflow-y: auto;
+}
+
+#command-executions {
+  list-style-type: none;
+  padding-left: 8px;
+  margin-top: 8px;
+
+  li.command-execution-item {
+    font-family: sans-serif;
+    display: inline-block;
+    letter-spacing: initial;
+    width: 100%;
+    padding-left: 12px;
+    margin-top: 12px;
+    margin-bottom: 38px;
+  }
+
+  .command-execution-errors {
+    padding-left: 0;
+    color: red;
+    font-family: sans-serif;
+
+    li {
+      border-left: none;
+      padding-left: 0;
+    }
+  }
+
+  span.command-execution-header {
+    font-size: 22px;
+    color: #444;
+    font-family: monospace;
+  }
+
+  li.success span.command-execution-header:before {
+    content: "➜";
+    color: green;
+  }
+
+  li.error span.command-execution-header:before {
+    content: "➜";
+    color: red;
+  }
+
+  li.loading span.command-execution-header:before {
+    content: "➜";
+    animation-name: loading-blink;
+    animation-duration: 1s;
+    animation-iteration-count: infinite;
+  }
+
+  .command-execution-results {
+    margin-top: 8px;
+    width: 95%;
+  }
+
+  .command-execution-results .empty-result {
+    color: $font-color-primary;
+    font-weight: 300;
+  }
+
+  .result {
+    font-size: 14px;
+    padding: 4px;
+    display: inline-block;
+    color: #ddd;
+  }
+
+  .result-pod {
+    @extend .result;
+    padding: 8px;
+    border: 1px solid $font-color-primary;
+
+    .result-header {
+      border-bottom: 1px solid $font-color-primary;
+      padding-bottom: 4px;
+      margin-bottom: 8px;
+    }
+
+    span.ip-address {
+      margin-left: 20px;
+    }
+
+    span.pod-status {
+      text-transform: uppercase;
+      color: $font-color-primary;
+      font-weight: 600;
+    }
+  }
+
+  .ip-address{
+    font-family: monospace;
+    font-size: 1em;
+    font-weight: 600;
+  }
+
+}
+

@@ -1,0 +1,68 @@
+@import "variables/colors";
+
+body {
+  margin: 0px;
+  background-color: #1e1e1e;
+  padding-bottom: 71px;
+}
+
+li {
+  list-style: none;
+}
+
+td.center {
+  text-align: center;
+}
+
+td.resource-status:before {
+  content: "●";
+  margin-right: 4px;
+}
+
+td.resource-status.resource-status-green:before {
+  color: green;
+}
+
+td.resource-status.resource-status-red:before {
+  color: red;
+}
+
+@keyframes loading-blink {
+  0%   {color: #1e1e1e;}
+  50%  {color: white;}
+  100% {color: #1e1e1e;}
+}
+
+table.result-table thead th {
+  border-bottom: 0;
+  font-size: 12px;
+  text-transform: uppercase;
+  color: #777;
+  text-align: left;
+}
+
+table.result-table tbody tr td {
+  color: $font-color-primary;
+  font-weight: 300;
+  letter-spacing: 1px;
+}
+
+td.error {
+  color: rgba(255,0,0,0.7) !important;
+}
+
+td.warning {
+  color: orange !important;
+}
+
+span.error {
+  color: rgba(255,0,0,0.7) !important;
+}
+
+span.warning {
+  color: orange !important;
+}
+
+span.success{
+  color: green !important;
+}
