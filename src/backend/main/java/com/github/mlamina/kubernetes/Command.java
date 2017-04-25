@@ -1,6 +1,7 @@
 package com.github.mlamina.kubernetes;
 
 import com.github.mlamina.api.MetaResponse;
+import com.github.mlamina.kubernetes.commands.CommandExecutionException;
 import io.fabric8.kubernetes.client.KubernetesClient;
 
 import java.util.regex.Matcher;
@@ -11,7 +12,7 @@ public abstract class Command {
     private String rawCommand;
 
     protected abstract Pattern getRegExp();
-    public abstract MetaResponse execute(KubernetesClient client) throws CommandParseException;
+    public abstract MetaResponse execute(KubernetesClient client) throws CommandParseException, CommandExecutionException;
 
     public boolean matches(String rawCommand) {
         Matcher m = getRegExp().matcher(rawCommand);

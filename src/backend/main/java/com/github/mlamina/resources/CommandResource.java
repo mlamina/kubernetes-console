@@ -4,6 +4,7 @@ import com.github.mlamina.api.*;
 import com.github.mlamina.kubernetes.Command;
 import com.github.mlamina.kubernetes.CommandParseException;
 import com.github.mlamina.kubernetes.CommandParser;
+import com.github.mlamina.kubernetes.commands.CommandExecutionException;
 import io.fabric8.kubernetes.client.DefaultKubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClient;
 
@@ -39,9 +40,11 @@ public class CommandResource {
             try {
                 return Response.ok(commandOptional.get().execute(client)).build();
             } catch (CommandParseException e) {
-                return Response.ok(MetaResponse.error(new ResponseError(100, e.getMessage()))).build();
+                return Response.ok(MetaResponse.error(new ResponseError(ResponseError.CODE_COMMAND_PARSING_FAILED, e.getMessage()))).build();
+            } catch (CommandExecutionException e) {
+                return Response.ok(MetaResponse.error(new ResponseError(ResponseError.CODE_COMMAND_EXECUTION_FAILED, e.getMessage()))).build();
             }
-        return Response.ok(MetaResponse.error(new ResponseError(101, "Input did not match any available command"))).build();
+        return Response.ok(MetaResponse.error(new ResponseError(ResponseError.CODE_COMMAND_NOT_FOUND, "Input did not match any available command"))).build();
     }
 
 }

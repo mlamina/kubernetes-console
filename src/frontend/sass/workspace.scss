@@ -77,12 +77,12 @@ td.resource-status.resource-status-red:before {
   }
 
   li.success span.command-execution-header:before {
-    content: "➜";
+    content: "▸";
     color: green;
   }
 
   li.error span.command-execution-header:before {
-    content: "➜";
+    content: "▸";
     color: red;
   }
 
