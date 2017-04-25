@@ -17,12 +17,20 @@ class WorkspaceView extends Backbone.View {
       <ul id="command-executions"></ul>
     `);
     this.model = new CommandExecutions();
-    this.listenTo(this.model, 'change', this.render);
+    this.listenTo(this.model, 'change', this.scrollToBottom);
+  }
+
+  scrollToBottom() {
+    this.$el.animate({ scrollTop: this.$el[0].scrollHeight - this.$el.height()}, "fast");
   }
 
   addCommandExecution(commandExecution) {
     this.model.add(commandExecution);
-    this.render();
+    let list = this.$('#command-executions');
+    let view = new CommandExecutionView({ model: commandExecution });
+    view.render();
+    list.append(view.$el);
+    this.scrollToBottom();
   }
 
   render() {

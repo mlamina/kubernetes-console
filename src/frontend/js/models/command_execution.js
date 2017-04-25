@@ -24,8 +24,11 @@ class CommandExecution extends Backbone.Model {
   }
 
   stopWatching() {
-    if (this.interval)
+    if (this.interval) {
       clearInterval(this.interval);
+      this.interval = undefined;
+    }
+
   }
 
   reload() {

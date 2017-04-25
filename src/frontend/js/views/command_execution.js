@@ -26,6 +26,9 @@ class CommandExecutionView extends Backbone.View {
     `);
 
     this.listenTo(this.model, 'change', this.render);
+    this.events = {
+      'click span.watch-button': 'toggleWatching'
+    }
   }
 
   toggleWatching() {
@@ -38,13 +41,14 @@ class CommandExecutionView extends Backbone.View {
 
 
   render() {
+    let self = this;
     this.$el.html( this.template());
     if (this.model.has('result') || this.model.has('errors'))
       this.$('li').removeClass('loading');
     if (!this.model.isWatching()) {
       this.$('span.watch-button').hide();
     } else
-      this.$('span.watch-button').click(this.toggleWatching);
+      this.$('span.watch-button').click(() => self.toggleWatching());
 
     if (this.model.has('errors')) {
       this.$('li').addClass('error');
