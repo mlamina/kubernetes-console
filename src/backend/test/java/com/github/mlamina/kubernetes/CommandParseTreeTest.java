@@ -107,12 +107,15 @@ public class CommandParseTreeTest {
     @Test
     public void testParseAddsLogCommand() throws CommandParseException {
         List<CommandToken> parsed = tree.parse("logs default/pod1".split(" "));
-        assertThat(parsed.size()).isEqualTo(2);
+        assertThat(parsed.size()).isEqualTo(3);
         assertThat(parsed.get(0).getPosition()).isEqualTo(0);
         assertThat(parsed.get(1).getPosition()).isEqualTo(1);
         assertThat(parsed.get(1).getValue()).isEqualTo("default/pod1");
         assertThat(parsed.get(1).isKnown()).isTrue();
         assertThat(parsed.get(1).isParsed()).isTrue();
+        assertThat(parsed.get(2).getValue()).isEqualTo("");
+        assertThat(parsed.get(2).getCompletions().size()).isEqualTo(1);
+        assertThat(parsed.get(2).getCompletions().get(0)).isEqualTo("|");
 
     }
 
@@ -139,6 +142,20 @@ public class CommandParseTreeTest {
 
         assertThat(parsed.get(2).getPosition()).isEqualTo(2);
         assertThat(parsed.get(2).getValue()).isEqualTo("");
+    }
+
+    @Test
+    public void testParseRecognizesWatchFilter() throws CommandParseException {
+        List<CommandToken> parsed = tree.parse("from default get pod pod1 | watch".split(" "));
+        assertThat(parsed.size()).isEqualTo(7);
+        assertThat(parsed.get(5).getValue()).isEqualTo("|");
+        assertThat(parsed.get(5).isVariable()).isFalse();
+        assertThat(parsed.get(5).isParsed()).isTrue();
+        assertThat(parsed.get(5).isKnown()).isTrue();
+        assertThat(parsed.get(6).getValue()).isEqualTo("watch");
+        assertThat(parsed.get(6).isVariable()).isFalse();
+        assertThat(parsed.get(6).isKnown()).isTrue();
+        assertThat(parsed.get(6).isParsed()).isTrue();
     }
 
 }

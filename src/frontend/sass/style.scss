@@ -1,3 +1,6 @@
+// for referencing Bootstrap CDN font files directly
+$fa-font-path: "//netdna.bootstrapcdn.com/font-awesome/4.7.0/fonts" !default;
+@import "../jspm_packages/npm/font-awesome@4.7.0/scss/font-awesome";
 @import "global";
 @import "editor";
 @import "workspace";

@@ -31,9 +31,12 @@ public class CommandParseTree {
                 // get {resources} in ...
                 .map((node) -> node.addChild("in"))
                 // get {resources} in {namespace}
-                .forEach((inNode) -> namespaces.forEach(inNode::addChild));
+                .flatMap((inNode) -> namespaces.stream().map(inNode::addChild))
+                .forEach(CommandParseTree::addWatchFilter);
         // get {resources}
-        nonNamespacedResourceTypes.forEach((r) -> getNode.addChild(r + "s"));
+        nonNamespacedResourceTypes.stream()
+                .map((r) -> getNode.addChild(r + "s"))
+                .forEach(CommandParseTree::addWatchFilter);
         // from ...
         CommandParseTree fromNode = tree.addChild("from");
         namespaces.stream()
@@ -50,16 +53,16 @@ public class CommandParseTree {
                                 .stream()
                                 // filter resources by namespace
                                 .filter((resource) -> resource.getMetadata().getNamespace().equals(getInNamespaceNode.getParent().getToken()))
-                                .forEach((resource) -> getResourceInNamespaceNode.addChild(resource.getMetadata().getName()));
+                                .map((resource) -> getResourceInNamespaceNode.addChild(resource.getMetadata().getName()))
+                                .forEach(CommandParseTree::addWatchFilter);
                     })
                 );
-        // watch ...
-        tree.addChild("watch");
         // logs ...
         CommandParseTree logsNode = tree.addChild("logs");
         ResourceCache.INSTANCE.get("pod").stream()
                 .map((pod) -> String.format("%s/%s", pod.getMetadata().getNamespace(), pod.getMetadata().getName()))
-                .forEach(logsNode::addChild);
+                .map(logsNode::addChild)
+                .forEach(CommandParseTree::addWatchFilter);
         // run {command} in {pod}[/{container}]
         CommandParseTree runCommandNode = tree.addChild("run").addVariable("command").addChild("in");
         ResourceCache.INSTANCE.get("pod").stream()
@@ -77,6 +80,10 @@ public class CommandParseTree {
                 // scale {namespace}/{deploymentName} {replicas}
                 .forEach((deploymentNode) -> deploymentNode.addVariable("replicas"));
         return tree;
+    }
+
+    private static CommandParseTree addWatchFilter(CommandParseTree node) {
+        return node.addChild("|").addChild("watch");
     }
 
     // Root

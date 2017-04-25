@@ -9,6 +9,20 @@
   overflow-y: auto;
 }
 
+@keyframes blink {
+  from { opacity: 0.2; }
+  to { opacity: 1.0; }
+}
+
+span.watch-button  {
+  color: $font-color-highlight;
+  cursor: hand;
+  animation: blink 0.7s infinite alternate;
+}
+
+span.watch-button:hover  {
+  content: '<i class="fa fa-eye-slash-slash" aria-hidden="true"></i>';
+}
 
 td.resource-status:before {
   content: "●";

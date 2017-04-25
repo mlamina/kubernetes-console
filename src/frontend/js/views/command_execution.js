@@ -14,9 +14,12 @@ class CommandExecutionView extends Backbone.View {
   initialize() {
     this.template = _.template(`
       <li class="loading command-execution-item">
-      <span class="command-execution-header">
-        <%= this.model.get('command').get('raw') %>
-      </span>
+        <span class="command-execution-header">
+          <%= this.model.get('command').get('raw') %>
+           <span class="watch-button">
+            <i class="fa fa-eye" aria-hidden="true"></i>
+           </span>
+        </span>
       <div class="command-execution-results"></div> 
        
       </li>
@@ -25,10 +28,24 @@ class CommandExecutionView extends Backbone.View {
     this.listenTo(this.model, 'change', this.render);
   }
 
+  toggleWatching() {
+    if (this.model.isWatching())
+      this.model.stopWatching();
+    else
+      this.model.startWatching();
+    this.render();
+  }
+
+
   render() {
     this.$el.html( this.template());
     if (this.model.has('result') || this.model.has('errors'))
       this.$('li').removeClass('loading');
+    if (!this.model.isWatching()) {
+      this.$('span.watch-button').hide();
+    } else
+      this.$('span.watch-button').click(this.toggleWatching);
+
     if (this.model.has('errors')) {
       this.$('li').addClass('error');
       let errorList = new ErrorResultView({ model: new Backbone.Model({ errors: this.model.get('errors') })});
@@ -58,6 +75,7 @@ class CommandExecutionView extends Backbone.View {
       }
       resultView.render();
       resultList.append(resultView.$el.html());
+
     }
   }
 }

@@ -59,10 +59,6 @@ class EditorView extends Backbone.View {
       event.preventDefault();
       this.historyDepth = this.historyDepth - 1;
       this.loadHistoryCommand();
-    } else if (this.historyDepth >= 0) {
-      // Reset
-      this.historyDepth = -1;
-      this.$el.find('#editor').val('');
     }
 
   }

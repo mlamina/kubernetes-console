@@ -6,6 +6,29 @@ class CommandExecution extends Backbone.Model {
 
   initialize() {
     this.api = new API();
+    this.reload();
+    if (this.getFilter() === 'watch') {
+      this.startWatching();
+    }
+  }
+
+  isWatching() {
+    return this.interval !== undefined;
+  }
+
+  startWatching() {
+    let self = this;
+    this.interval = setInterval(() => {
+      self.reload();
+    }, 1000);
+  }
+
+  stopWatching() {
+    if (this.interval)
+      clearInterval(this.interval);
+  }
+
+  reload() {
     let self = this;
     this.api.executeCommand(this.getCommand()).then(
       (response) => {
@@ -20,8 +43,16 @@ class CommandExecution extends Backbone.Model {
     );
   }
 
+  getFilter() {
+    let splitCommand = this.get('command').get('raw').split('|');
+    if (splitCommand.length > 1)
+      return splitCommand[1].trim().toLowerCase();
+    return undefined;
+  }
+
   getCommand() {
-    return this.get('command').get('raw');
+    let currentCommand = this.get('command').get('raw').split('|');
+    return currentCommand[0].trim();
   }
 
 
