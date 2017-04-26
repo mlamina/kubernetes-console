@@ -1,12 +1,7 @@
 import * as $ from 'jquery';
-
-const DefaultEndpoint = 'http://localhost:8082/api';
+import * as Config from './config';
 
 class API {
-
-  constructor(endpoint) {
-    this.endpoint = endpoint || DefaultEndpoint;
-  }
 
   parseCommand(command) {
     return this.sendPostRequest('/commands/parse', {
@@ -22,7 +17,7 @@ class API {
 
   sendPostRequest(path, data) {
     return $.ajax({
-      url: this.endpoint + path,
+      url: Config.backendUrl + path,
       dataType: 'json',
       type: 'post',
       contentType: 'application/json',
