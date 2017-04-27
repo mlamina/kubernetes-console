@@ -10,7 +10,7 @@ class DeploymentResultView extends Backbone.View {
     this.template = _.template(`
       <div class="result-deployment">
         <div class="result-header">
-          <span class="result-title"><%= deployment.status.replicas %> / <%= deployment.spec.replicas %> Replicas</span>
+          <span class="result-title"><%= deployment.status.replicas || pods.length %> / <%= deployment.spec.replicas %> Replicas</span>
           <span class="deployment-progress"></span>
         </div>
       </div>
@@ -21,13 +21,13 @@ class DeploymentResultView extends Backbone.View {
 
   render() {
     this.$el.html( this.template(this.model.attributes));
+
     let progressBar = new ProgressBarView({
       model: new Backbone.Model({
         maximum: this.model.get('deployment').spec.replicas,
-        current: this.model.get('deployment').status.replicas
+        current: this.model.get('deployment').status.replicas || this.model.get('pods').length
       })
     });
-
     progressBar.render();
     this.$('.deployment-progress').append(progressBar.$el.html());
 

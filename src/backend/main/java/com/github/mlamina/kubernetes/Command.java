@@ -3,6 +3,8 @@ package com.github.mlamina.kubernetes;
 import com.github.mlamina.api.MetaResponse;
 import com.github.mlamina.kubernetes.commands.CommandExecutionException;
 import io.fabric8.kubernetes.client.KubernetesClient;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;

@@ -1,9 +1,6 @@
 package com.github.mlamina.kubernetes;
 
-import com.github.mlamina.kubernetes.commands.GetResourceInNamespaceCommand;
-import com.github.mlamina.kubernetes.commands.GetResourcesInNamespaceCommand;
-import com.github.mlamina.kubernetes.commands.GetResourcesCommand;
-import com.github.mlamina.kubernetes.commands.LogsCommand;
+import com.github.mlamina.kubernetes.commands.*;
 import com.google.common.collect.Sets;
 
 import java.util.List;
@@ -19,6 +16,7 @@ public class CommandParser {
     private final String rawCommand;
     private final Set<Command> commands = Sets.newHashSet(
             new LogsCommand(),
+            new ScaleDeploymentCommand(),
             new GetResourcesCommand(),
             new GetResourceInNamespaceCommand(),
             new GetResourcesInNamespaceCommand());

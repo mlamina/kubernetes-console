@@ -2,6 +2,7 @@ package com.github.mlamina.kubernetes;
 
 import com.github.mlamina.kubernetes.commands.GetResourceInNamespaceCommand;
 import com.github.mlamina.kubernetes.commands.LogsCommand;
+import com.github.mlamina.kubernetes.commands.ScaleDeploymentCommand;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.extensions.Deployment;
@@ -54,6 +55,18 @@ public class CommandRegexTests {
         assertThat(command.matches("from default get deployment ")).isFalse();
         assertThat(command.matches("from default get deployment")).isFalse();
         assertThat(command.matches("from default get pods es-saphire-3w6d1")).isFalse();
+    }
+
+    @Test
+    public void testScaleDeployment() throws CommandParseException {
+        ScaleDeploymentCommand command = new ScaleDeploymentCommand();
+        assertThat(command.matches("scale default/dep 0")).isTrue();
+        assertThat(command.matches("scale default/dep 10")).isTrue();
+        assertThat(command.matches("scale default/otherdep 1")).isTrue();
+        assertThat(command.matches("scale default/otherdep")).isFalse();
+        assertThat(command.matches("scale default/otherdep ")).isFalse();
+        assertThat(command.matches("scale default 0 ")).isFalse();
+        assertThat(command.matches("scale dep 0 ")).isFalse();
     }
 
 }
