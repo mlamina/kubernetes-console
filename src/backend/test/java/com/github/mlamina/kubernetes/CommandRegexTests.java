@@ -2,6 +2,7 @@ package com.github.mlamina.kubernetes;
 
 import com.github.mlamina.kubernetes.commands.GetResourceInNamespaceCommand;
 import com.github.mlamina.kubernetes.commands.LogsCommand;
+import com.github.mlamina.kubernetes.commands.RunCommand;
 import com.github.mlamina.kubernetes.commands.ScaleDeploymentCommand;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.api.model.Pod;
@@ -67,6 +68,18 @@ public class CommandRegexTests {
         assertThat(command.matches("scale default/otherdep ")).isFalse();
         assertThat(command.matches("scale default 0 ")).isFalse();
         assertThat(command.matches("scale dep 0 ")).isFalse();
+    }
+
+    @Test
+    public void testRunCommand() throws CommandParseException {
+        RunCommand command = new RunCommand();
+        assertThat(command.matches("run \"bash\" in kube-system/unknown")).isFalse();
+        assertThat(command.matches("run \"\" in kube-system/pod2")).isFalse();
+        assertThat(command.matches("run \" in kube-system/pod2")).isFalse();
+        assertThat(command.matches("run")).isFalse();
+        assertThat(command.matches("run ")).isFalse();
+        assertThat(command.matches("run \"bash\" in kube-system/pod2")).isTrue();
+        assertThat(command.matches("run \"ls -la\" in kube-system/pod2")).isTrue();
     }
 
 }

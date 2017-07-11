@@ -6,6 +6,7 @@ public class ResponseError {
     public static final int CODE_COMMAND_EXECUTION_FAILED = 101;
     public static final int CODE_COMMAND_NOT_FOUND = 102;
     public static final int CODE_LOG_FAILED = 200;
+    public static final int CODE_RUN_FAILED = 301;
 
     public ResponseError(int code, String message) {
         this.message = message;

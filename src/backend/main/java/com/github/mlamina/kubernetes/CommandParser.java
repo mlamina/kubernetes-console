@@ -16,6 +16,7 @@ public class CommandParser {
     private final String rawCommand;
     private final Set<Command> commands = Sets.newHashSet(
             new LogsCommand(),
+            new RunCommand(),
             new ScaleDeploymentCommand(),
             new GetResourcesCommand(),
             new GetResourceInNamespaceCommand(),
