@@ -4,6 +4,7 @@ import LogResultView from "./results/logs"
 import TableResultView from "./results/table"
 import PodResultView from "./results/pod"
 import DeploymentResultView from "./results/deployment"
+import BashOutputView from "./results/bash_output"
 import ErrorResultView from "./results/error"
 import K8ResourceList from "../models/k8resource_list"
 import K8Resource from "../models/k8resource"
@@ -70,6 +71,9 @@ class CommandExecutionView extends Backbone.View {
           break;
         case "DeploymentBundle":
           resultView = new DeploymentResultView({ model: new K8Resource(result.data)});
+          break;
+        case "BashOutput":
+          resultView = new BashOutputView({ model: new K8Resource({ output: result.data})});
           break;
         default:
           this.$('li').addClass('error').removeClass('success');
