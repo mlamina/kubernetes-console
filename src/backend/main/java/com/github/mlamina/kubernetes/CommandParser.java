@@ -27,8 +27,8 @@ public class CommandParser {
     }
 
     public List<CommandToken> getTokens() {
-        String[] split = rawCommand.trim().split(" ");
-        return CommandParseTree.get().parse(split);
+        CommandTokenizer tokenizer = new CommandTokenizer(rawCommand.trim());
+        return CommandParseTree.get().parse(tokenizer.tokenize());
     }
 
     public Optional<Command> getCommand() {

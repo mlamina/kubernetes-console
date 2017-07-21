@@ -27,8 +27,10 @@ class AutocompleteView extends Backbone.View {
       token.class = "";
       if (!token.known)
         token.class = "error";
-      if (token.variable)
+      if (token.variable) {
         token.class = "variable";
+      }
+
     });
     this.$el.html( this.template({}));
   }

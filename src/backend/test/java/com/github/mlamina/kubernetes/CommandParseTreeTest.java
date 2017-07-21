@@ -158,4 +158,61 @@ public class CommandParseTreeTest {
         assertThat(parsed.get(6).isParsed()).isTrue();
     }
 
+    @Test
+    public void testParseFindsRunCommandVariable() throws CommandParseException {
+        CommandTokenizer tokenizer = new CommandTokenizer("run \"ls -la\" in default/pod1");
+        List<CommandToken> parsed = tree.parse(tokenizer.tokenize());
+        assertThat(parsed.size()).isEqualTo(4);
+        assertThat(parsed.get(0).getValue()).isEqualTo("run");
+        assertThat(parsed.get(0).isVariable()).isFalse();
+        assertThat(parsed.get(0).isParsed()).isTrue();
+        assertThat(parsed.get(0).isKnown()).isTrue();
+        assertThat(parsed.get(1).getValue()).isEqualTo("\"ls -la\"");
+        assertThat(parsed.get(1).isVariable()).isTrue();
+        assertThat(parsed.get(1).isKnown()).isTrue();
+        assertThat(parsed.get(1).isParsed()).isTrue();
+    }
+
+    @Test
+    public void testParseFindsIncompleteRunCommandVariable() throws CommandParseException {
+        CommandTokenizer tokenizer = new CommandTokenizer("run \"ls -la");
+        List<CommandToken> parsed = tree.parse(tokenizer.tokenize());
+        assertThat(parsed.size()).isEqualTo(3);
+        assertThat(parsed.get(0).getValue()).isEqualTo("run");
+        assertThat(parsed.get(0).isVariable()).isFalse();
+        assertThat(parsed.get(0).isParsed()).isTrue();
+        assertThat(parsed.get(0).isKnown()).isTrue();
+        assertThat(parsed.get(1).getValue()).isEqualTo("\"ls -la");
+        assertThat(parsed.get(1).isVariable()).isTrue();
+        assertThat(parsed.get(1).isKnown()).isTrue();
+        assertThat(parsed.get(1).isParsed()).isTrue();
+        assertThat(parsed.get(2).getValue()).isEqualTo("");
+        assertThat(parsed.get(2).isVariable()).isFalse();
+        assertThat(parsed.get(2).isKnown()).isFalse();
+        assertThat(parsed.get(2).isParsed()).isFalse();
+        assertThat(parsed.get(2).getCompletions().get(0)).isEqualTo("\" in");
+    }
+
+    @Test
+    public void testParseFindsIncompleteRunCommandVariableWithTrailingSpace() throws CommandParseException {
+        CommandTokenizer tokenizer = new CommandTokenizer("run \"ls -la ");
+        List<CommandToken> parsed = tree.parse(tokenizer.tokenize());
+        assertThat(parsed.size()).isEqualTo(3);
+        assertThat(parsed.get(0).getValue()).isEqualTo("run");
+        assertThat(parsed.get(0).isVariable()).isFalse();
+        assertThat(parsed.get(0).isParsed()).isTrue();
+        assertThat(parsed.get(0).isKnown()).isTrue();
+        assertThat(parsed.get(1).getValue()).isEqualTo("\"ls -la ");
+        assertThat(parsed.get(1).isVariable()).isTrue();
+        assertThat(parsed.get(1).isKnown()).isTrue();
+        assertThat(parsed.get(1).isParsed()).isTrue();
+
+        assertThat(parsed.get(2).getValue()).isEqualTo("");
+        assertThat(parsed.get(2).isVariable()).isFalse();
+        assertThat(parsed.get(2).isKnown()).isFalse();
+        assertThat(parsed.get(2).isParsed()).isFalse();
+        assertThat(parsed.get(2).getCompletions().get(0)).isEqualTo("\" in");
+    }
+
+
 }

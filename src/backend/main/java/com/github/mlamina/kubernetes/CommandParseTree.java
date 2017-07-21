@@ -152,8 +152,24 @@ public class CommandParseTree {
                     if (child.canHandleToken(command[0])) {
                         List<CommandToken> result = child.parse(ArrayUtils.remove(command, 0));
                         // If child was a variable, replace variable name with user value
-                        if (result.size() > 0 && result.get(0).isVariable())
+                        if (result.size() > 0 && result.get(0).isVariable()) {
                             result.get(0).setValue(command[0]);
+                            // Special case: Unfinished variable, e.g. "ls -la
+                            if (command[0].startsWith("\"") && !command[0].endsWith("\"")) {
+                                // Should always be true if we have an unfinished variable
+                                assert command.length == 1;
+                                result.get(1).setCompletions(result.get(1)
+                                        .getCompletions()
+                                        .stream()
+                                        .map(c -> "\" " + c)
+                                        .collect(Collectors.toList()));
+
+//                                result.get(1).getCompletions().add(command[0]+"\"");
+//                                while(result.size() > 1)
+//                                    result.remove(result.size() - 1);
+                            }
+                        }
+
                         // Add current node to front of list
                         result.add(0, current);
                         return result;

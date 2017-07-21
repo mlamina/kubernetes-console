@@ -30,12 +30,9 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
-public class RunCommand extends Command implements ExecListener {
+public class RunCommand extends Command {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(RunCommand.class);
-    private ByteArrayOutputStream out = new ByteArrayOutputStream();
-    private boolean done = false;
-    private boolean success = false;
 
     @Override
     protected Pattern getRegExp() {
@@ -95,24 +92,5 @@ public class RunCommand extends Command implements ExecListener {
             return MetaResponse.error(error);
         }
 
-    }
-
-    @Override
-    public void onOpen(Response response) {
-        LOGGER.debug("Opened shell");
-    }
-
-    @Override
-    public void onFailure(Throwable throwable, Response response) {
-        LOGGER.error("Failed to execute shell command", throwable);
-        done = true;
-        success = false;
-    }
-
-    @Override
-    public void onClose(int code, String reason) {
-        LOGGER.debug("Closing shell");
-        done = true;
-        success = true;
     }
 }
